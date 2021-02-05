@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+پست: {{ post.id }}
+{% endblock %}
+
+{% block content %}
+<h1> {{ post.title }} </h1>
+<div> {{ post.text }} </div>
+<ul>
+    {% for com in post.comment.all %}
+        <li>
+            <div> {{ com.text }} </div>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

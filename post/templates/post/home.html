@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ شابلاگ
+{% endblock %}
+
+{% block content %}
+    <ul>
+    {% for post in all_posts %}
+        <li>
+            <a href="{% url 'post:post' post.id %}"> {{ post.title }} </a><br><br>
+            <div> {{ post.text }} </div>
+            <br>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}
