@@ -71,9 +71,9 @@ class Post(models.Model):
     image = models.ImageField(verbose_name='تصویر', upload_to='img/posts/')
     category = models.ForeignKey(
         Category, verbose_name='دسته بندی', on_delete=models.CASCADE)
-    comment = models.ManyToManyField(User, through='Comment', through_fields=(
+    user_comments = models.ManyToManyField(User, through='Comment', through_fields=(
         'post', 'user'), verbose_name='نظر', default=None, related_name='post_comment')
-    like_dislike = models.ManyToManyField(User, through='Like_Post', through_fields=(
+    user_likes = models.ManyToManyField(User, through='Like_Post', through_fields=(
         'post', 'user'), verbose_name='پسند', default=None, related_name='post_selection')
     tag = models.ManyToManyField(Tag, verbose_name='برچسب')
     approving = models.BooleanField(verbose_name='تایید پست', default=False)
@@ -120,7 +120,7 @@ class Like_Comment(models.Model):
     class Meta:
         verbose_name = 'پسند نظر'
         verbose_name_plural = 'پسند نظر ها'
-
+        # unique_together = ['user', 'comment']
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     selection = models.BooleanField(verbose_name='پسند', null=True, blank=True)

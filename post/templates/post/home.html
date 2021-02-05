@@ -5,13 +5,34 @@
 {% endblock %}
 
 {% block content %}
-    <ul>
+
+<!-- <div id="list-example" class="list-group">
     {% for post in all_posts %}
-        <li>
-            <a href="{% url 'post:post' post.id %}"> {{ post.title }} </a><br><br>
-            <div> {{ post.text }} </div>
-            <br>
-        </li>
+    <a class="list-group-item list-group-item-action" href="#list-item-{{ post.id }}">{{ post.title }}</a>
     {% endfor %}
-    </ul>
+</div>
+
+
+<div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" class="scrollspy-example" tabindex="0">
+    {% for post in all_posts %}
+    <h4 id="list-item-{{ post.id }}">{{ post.title }}</h4>
+    <p>{{ post.text }}</p>
+    {% endfor %}
+</div> -->
+
+
+
+
+<div class="m-2">
+    <br>
+
+    {% for post in all_posts %}
+
+    <div class="p-3 mb-2 bg-primary"><a href="{% url 'post:post' post.id %}" class="text-white"> {{ post.title }}</a></div>
+    <div class="p-3 mb-2 bg-white text-dark"> {{ post.text }} </div>
+    <hr>
+
+    {% endfor %}
+
+</div>
 {% endblock %}

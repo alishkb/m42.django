@@ -1,17 +1,22 @@
 {% extends 'base.html' %}
 
 {% block title %}
-پست: {{ post.id }}
+post: {{ post.id }}
 {% endblock %}
 
 {% block content %}
-<h1> {{ post.title }} </h1>
-<div> {{ post.text }} </div>
+<div class="m-4">
+<p class="fs-4">{{ post.title }}</p>
+<p class="fs-5">{{ post.text }}</p>
 <ul>
-    {% for com in post.comment.all %}
+    {% for comment in comments %}
         <li>
-            <div> {{ com.text }} </div>
+            <div>
+                <p class="fs-6">{{ comment.text }}</p>
+                <p class="fs-10">{{ comment.user }}</p>
+            </div>
         </li>
     {% endfor %}
 </ul>
+</div>
 {% endblock %}
