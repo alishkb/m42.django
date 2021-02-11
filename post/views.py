@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 from django.views import generic
 from post.models import Post, Comment
 
@@ -13,7 +13,7 @@ class HomeView(generic.ListView):
         return Post.objects.order_by('-pub_date')
 
 class PostView(generic.DetailView):
-    template_name = 'post/post.html'
+    template_name = 'post/detail.html'
     model = Post
 
     def get_context_data(self, **kwargs):
@@ -23,3 +23,5 @@ class PostView(generic.DetailView):
         context['comments'] = comments
         return context
     
+def CreatePost(request):
+    return render(request, 'post/create.html')

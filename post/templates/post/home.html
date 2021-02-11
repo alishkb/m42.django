@@ -28,8 +28,8 @@
 
     {% for post in all_posts %}
 
-    <div class="p-3 mb-2 bg-primary"><a href="{% url 'post:post' post.id %}" class="text-white"> {{ post.title }}</a></div>
-    <div class="p-3 mb-2 bg-white text-dark"> {{ post.text }} </div>
+    <div class="p-3 mb-2 bg-primary"><a href="{% url 'post:detail' post.id %}" class="text-white" style="text-decoration:none"> {{ post.title }}</a></div>
+    <div class="p-3 mb-2 bg-white text-dark"> {{ post.text|linebreaks }} </div>
     <hr>
 
     {% endfor %}

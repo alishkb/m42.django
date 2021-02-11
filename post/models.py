@@ -1,11 +1,12 @@
 from django.db import models
 from django.utils import timezone
 from phone_field import PhoneField
+from django.contrib.auth.models import AbstractBaseUser
 
 # Create your models here.
 
 
-class User(models.Model):
+class User(AbstractBaseUser):
     class Meta:
         verbose_name = 'کاربر وبلاگ'
         verbose_name_plural = 'کاربرهای وبلاگ'
@@ -17,7 +18,7 @@ class User(models.Model):
     #                    help_text='Contact Phone Number!', unique=True)
     phone = models.CharField(verbose_name='تلفن همراه', blank=True, unique=True, max_length=15)
     image = models.ImageField(verbose_name='تصویر', upload_to='img/users/', null=True, blank=True)
-    start_time = models.DateField(verbose_name='زمان ثبت نام', blank=True)
+    start_time = models.DateField(verbose_name='زمان ثبت نام', auto_now_add=True)
     login_time = models.DateField(verbose_name='زمان آخرین بازدید', blank=True)
     password = models.CharField(verbose_name='کلمه عبور', max_length=30)
 
@@ -63,6 +64,10 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'پست'
         verbose_name_plural = 'پست ها'
+        # permission = [
+        #     ("view_post_appact", "مشاهده پست های تایید شده و فعال"),
+        #     ("approve_post", "تایید پست ها")
+        # ]
 
     title = models.CharField(verbose_name='عنوان', max_length=100)
     text = models.TextField(verbose_name='متن', max_length=1000)
@@ -78,7 +83,7 @@ class Post(models.Model):
     tag = models.ManyToManyField(Tag, verbose_name='برچسب')
     approving = models.BooleanField(verbose_name='تایید پست', default=False)
     activate = models.BooleanField(verbose_name='قابلیت نمایش', default=True)
-    pub_date = models.DateTimeField(verbose_name='زمان انتشار', blank=True, default=timezone.now)
+    pub_date = models.DateTimeField(verbose_name='زمان انتشار', auto_now_add=True)
 
     def __str__(self):
         return self.title
