@@ -22,6 +22,8 @@ class User(AbstractBaseUser):
     login_time = models.DateField(verbose_name='زمان آخرین بازدید', blank=True)
     password = models.CharField(verbose_name='کلمه عبور', max_length=30)
 
+    USERNAME_FIELD='username'
+
     def __str__(self):
         return self.first_name + ' ' + self.last_name
 
@@ -86,7 +88,7 @@ class Post(models.Model):
     pub_date = models.DateTimeField(verbose_name='زمان انتشار', auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return f'{self.title}: {self.text[:15]}'
 
 
 class Like_Post(models.Model):

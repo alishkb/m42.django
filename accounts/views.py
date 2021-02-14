@@ -26,9 +26,10 @@ def user_register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            User.objects.create_user(cd['username'], cd['email'], cd['password'])
-            messages.success(request, 'You registered successfully', 'success')
-            return redirect('accounts:user_login')
+            user = User.objects.create_user(cd['username'], cd['email'], cd['password'])
+            login(request, user)
+            messages.success(request, f'You logged in successfully {cd["username"]}', 'success')
+            return redirect('post:home')
     else:
         form = UserRegistrationForm()
     return render(request,'accounts/register.html', {'form':form})
