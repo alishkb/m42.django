@@ -1,31 +1,10 @@
 from django.db import models
 from django.utils import timezone
 from phone_field import PhoneField
+from accounts.models import User
 from django.contrib.auth.models import AbstractBaseUser
 
 # Create your models here.
-
-
-class User(AbstractBaseUser):
-    class Meta:
-        verbose_name = 'کاربر وبلاگ'
-        verbose_name_plural = 'کاربرهای وبلاگ'
-    username = models.CharField(verbose_name='نام کاربری', max_length=20, unique=True)
-    first_name = models.CharField(verbose_name='نام', max_length=100)
-    last_name = models.CharField(verbose_name='نام خانوادگی', max_length=100)
-    email = models.EmailField(verbose_name='پست الکتریکی', unique=True)
-    # phone = PhoneField(verbose_name='تلفن همراه', blank=True,
-    #                    help_text='Contact Phone Number!', unique=True)
-    phone = models.CharField(verbose_name='تلفن همراه', blank=True, unique=True, max_length=15)
-    image = models.ImageField(verbose_name='تصویر', upload_to='img/users/', null=True, blank=True)
-    start_time = models.DateField(verbose_name='زمان ثبت نام', auto_now_add=True)
-    login_time = models.DateField(verbose_name='زمان آخرین بازدید', blank=True)
-    password = models.CharField(verbose_name='کلمه عبور', max_length=30)
-
-    USERNAME_FIELD='username'
-
-    def __str__(self):
-        return self.first_name + ' ' + self.last_name
 
 
 class FatherCat(models.Model):

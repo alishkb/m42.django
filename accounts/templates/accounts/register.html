@@ -7,7 +7,25 @@
 {% block content %}
     <form action="" method="post" novalidate>
         {% csrf_token %}
-        {{ form.as_p }}
+
+        {{ form.non_field_errors }}
+
+        {{ form.username.errors }}
+        <label for="{{ form.username.id_for_label }}">Username</label>
+        {{ form.username }}<br>
+        {{ form.email.errors }}
+        <label for="{{ form.email.id_for_label }}">Email</label>
+        {{ form.email }}<br>
+        {{ form.password.errors }}
+        <label for="{{ form.password.id_for_label }}">Password</label>
+        {{ form.password }}<br>
+        {{ form.re_password.errors }}
+        <label for="{{ form.re_password.id_for_label }}">Re-Enter Password</label>
+        {{ form.re_password }}<br>
+        
+
+
+        <!-- {{ form.as_p }} -->
         <input type="submit" value="Create" class="btn btn-primary">
     </form>
 {% endblock %}
