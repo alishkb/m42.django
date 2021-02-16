@@ -8,7 +8,7 @@ from django.contrib.auth.models import Group
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
-    list_display = ('username', 'first_name', 'last_name', 'is_active', 'is_admin')
+    list_display = ('username', 'last_name', 'is_active', 'is_admin')
     list_filter = ('is_admin',)
     fieldsets = (
         ('Main', {'fields':('username', 'first_name', 'last_name', 'password')}),
@@ -17,9 +17,11 @@ class UserAdmin(BaseUserAdmin):
     )
     add_fieldsets = (
         (None, {
-            'fields': ('username', 'password', 're_password', 'first_name', 'last_name', 'email', 'phone')
-        })
+            # 'fields': ('username', 'password', 're_password', 'first_name', 'last_name', 'email', 'phone')
+            'fields': ('username', 'password', 're_password', 'last_name', 'phone')
+        }),
     )
+    readonly_fields = ('start_time', 'login_time')
     search_fields = ('username', 'first_name', 'last_name')
     ordering = ('username', 'last_name')
     filter_horizontal = ()

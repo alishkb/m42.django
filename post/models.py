@@ -67,7 +67,7 @@ class Post(models.Model):
     pub_date = models.DateTimeField(verbose_name='زمان انتشار', auto_now_add=True)
 
     def __str__(self):
-        return f'{self.title}: {self.text[:15]}'
+        return f'{self.title}: {self.text[:30]}'
 
 
 class Like_Post(models.Model):
