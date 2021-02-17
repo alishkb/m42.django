@@ -42,7 +42,9 @@ class UserLoginForm(forms.Form):
 
 class UserRegistrationForm(forms.Form):
     username = forms.CharField(max_length=20, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter username'}))
-    email = forms.EmailField(max_length=50, widget=forms.EmailInput(attrs={'class':'form-control', 'placeholder':'Enter Email'}))
+    last_name = forms.CharField(label='last name', max_length=100, widget= forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter last name'}))
+    # email = forms.EmailField(max_length=50, widget=forms.EmailInput(attrs={'class':'form-control', 'placeholder':'Enter Email'}))
+    phone = forms.CharField(label='phone', max_length=15, widget=forms.TextInput(attrs={'class':'form-control', 'palceholder':'Enter phone'}))
     password = forms.CharField(label='password', max_length=20, widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder': 'Enter password'}))
     re_password = forms.CharField(label='confrim password', max_length=20, widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder': 're-Enter password'}))
 

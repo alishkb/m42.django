@@ -6,8 +6,9 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       {% if request.user.is_authenticated %}
-      <a class="nav-item nav-link active" href="{% url 'post:create' %}">پست جدید</a>
-      <a class="nav-item nav-link active" href="{% url 'accounts:logout' %}">خروج</a>
+      <a class="nav-item nav-link active" href="{% url 'post:create' request.user.id %}">پست جدید</a>
+      <a class="nav-item nav-link active" href="{% url 'accounts:dashboard' request.user.id %}">پروفایل</a>
+      <a class="nav-item nav-link active" href="{% url 'accounts:logout'  %}">خروج</a>
       {% else %}
       <a class="nav-item nav-link active" href="{% url 'accounts:login' %}">ورود</a>
       <a class="nav-item nav-link" href="{% url 'accounts:register' %}">ثبت نام</a>
@@ -28,7 +29,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'post:create' %}">پست جدید</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'post:create' request.user.id %}">پست جدید</a>
           </li>
         </ul>
       </div>

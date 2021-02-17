@@ -24,7 +24,7 @@ class Category(models.Model):
         verbose_name_plural = 'دسته بندی ها'
 
     name = models.CharField(verbose_name='دسته', max_length=100, unique=True)
-    fatherCat = models.ForeignKey(FatherCat, on_delete=models.CASCADE, verbose_name='بالا دسته بندی')
+    fatherCat = models.ForeignKey(FatherCat, on_delete=models.CASCADE, null=True, blank=True, verbose_name='بالا دسته بندی')
 
     def __str__(self):
         return self.name
@@ -54,7 +54,7 @@ class Post(models.Model):
     text = models.TextField(verbose_name='متن', max_length=1000)
     user = models.ForeignKey(User, verbose_name='کاربر',
                              on_delete=models.CASCADE, related_name='post_user')
-    image = models.ImageField(verbose_name='تصویر', upload_to='img/posts/')
+    image = models.ImageField(verbose_name='تصویر', upload_to='img/posts/', null=True, blank=True)
     category = models.ForeignKey(
         Category, verbose_name='دسته بندی', on_delete=models.CASCADE)
     user_comments = models.ManyToManyField(User, through='Comment', through_fields=(

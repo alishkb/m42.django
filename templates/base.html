@@ -11,9 +11,9 @@
     {% block tags %} {% endblock %}
 </head>
 <body {% block body_dir %} dir="rtl" {% endblock %}> 
-    
-    {% include 'inc/navbar.html' %}
-
+    <div dir="rtl">
+        {% include 'inc/navbar.html' %}
+    </div>
     <!-- <div class="jumbotron"> -->
     {% include 'inc/messages.html' %}
     {% block content %} {% endblock %}

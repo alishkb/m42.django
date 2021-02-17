@@ -9,7 +9,7 @@ class User(AbstractBaseUser):
         verbose_name = 'کاربر وبلاگ'
         verbose_name_plural = 'کاربرهای وبلاگ'
     username = models.CharField(verbose_name='نام کاربری', max_length=20, unique=True)
-    first_name = models.CharField(verbose_name='نام', max_length=100)
+    first_name = models.CharField(verbose_name='نام', max_length=100, null=True, blank=True)
     last_name = models.CharField(verbose_name='نام خانوادگی', max_length=100)
     email = models.EmailField(verbose_name='پست الکتریکی', unique=True, null=True, blank=True)
     # phone = PhoneField(verbose_name='تلفن همراه', blank=True,

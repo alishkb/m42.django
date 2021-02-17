@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from .models import User
+from post.models import Post
 from .forms import UserLoginForm, UserRegistrationForm
 
 def user_login(request):
@@ -26,7 +28,8 @@ def user_register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = User.objects.create_user(cd['username'], cd['email'], cd['password'])
+            user = User.objects.create_user(cd['username'], cd['last_name'], cd['phone'], cd['password'])
+            # user.save()
             login(request, user)
             messages.success(request, f'You logged in successfully {cd["username"]}', 'success')
             return redirect('post:home')
@@ -38,4 +41,10 @@ def user_logout(request):
     logout(request)
     messages.success(request, 'you logged out successfully', 'success')
     return redirect('post:home')
+
+
+def user_dashboard(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    posts = Post.objects.filter(user=user)
+    return render(request, 'accounts/dashboard.html', {'user': user, 'posts': posts})
 # Create your views here.

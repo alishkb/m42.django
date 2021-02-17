@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic
 from post.models import Post, Comment
+from .forms import AddPostForm
+from django.contrib import messages
 
 # Create your views here.
 
@@ -23,5 +25,17 @@ class PostView(generic.DetailView):
         context['comments'] = comments
         return context
     
-def CreatePost(request):
-    return render(request, 'post/create.html')
+def CreatePost(request, user_id):
+    if request.user.id == user_id:
+        if request.method == 'POST':
+            form = AddPostForm(request.POST)
+            if form.is_valid():
+                new_post = form.save(commit=False)
+                new_post.user = request.user
+                new_post.save()
+                messages.success(request, 'پست شما با موفقیت ذخیره شد!', 'success')
+                return render('post:home')
+            # pass
+        else:
+            form = AddPostForm()
+    return render(request, 'post/create.html', {'form':form})

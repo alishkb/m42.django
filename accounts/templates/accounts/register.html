@@ -13,9 +13,15 @@
         {{ form.username.errors }}
         <label for="{{ form.username.id_for_label }}">Username</label>
         {{ form.username }}<br>
-        {{ form.email.errors }}
+        <!-- {{ form.email.errors }}
         <label for="{{ form.email.id_for_label }}">Email</label>
-        {{ form.email }}<br>
+        {{ form.email }}<br> -->
+        {{ form.last_name.errors }}
+        <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+        {{ form.last_name }}<br>
+        {{ form.phone.errors }}
+        <label for="{{ form.phone.id_for_label }}">Phone</label>
+        {{ form.phone }}<br>
         {{ form.password.errors }}
         <label for="{{ form.password.id_for_label }}">Password</label>
         {{ form.password }}<br>
