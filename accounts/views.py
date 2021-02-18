@@ -5,8 +5,10 @@ from django.contrib import messages
 from .models import User
 from post.models import Post
 from .forms import UserLoginForm, UserRegistrationForm
+from django.contrib.auth.decorators import login_required
 
 def user_login(request):
+    next = request.GET.get('next')
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         if form.is_valid():
@@ -16,6 +18,8 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'you logged in successfully', 'success')
+                if next:
+                    return redirect(next)
                 return redirect('post:home')
             else:
                 messages.error(request, 'wrong username or password', 'warning')
@@ -37,12 +41,13 @@ def user_register(request):
         form = UserRegistrationForm()
     return render(request,'accounts/register.html', {'form':form})
 
+@login_required
 def user_logout(request):
     logout(request)
     messages.success(request, 'you logged out successfully', 'success')
     return redirect('post:home')
 
-
+@login_required
 def user_dashboard(request, user_id):
     user = get_object_or_404(User, id=user_id)
     posts = Post.objects.filter(user=user)

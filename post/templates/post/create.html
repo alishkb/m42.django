@@ -8,8 +8,10 @@
 
     <form action="" method="post" novalidate>
         {% csrf_token %}
-
+        <!-- <div class="mb-3"> -->
         {{ form.as_p }}
+        <!-- </div> -->
+
         <!-- {{ form.title.errors }}
         <label for="form.title.id_for_label">عنوان</label>
         {{ form.title }}<br>
@@ -26,7 +28,7 @@
         <label for="form.tag.id_for_label">برچسب</label>
         {{ form.tag }}<br> -->
 
-        <input type="submit" value="Login" class="btn btn-primary">
+        <input type="submit" value="ثبت پست" class="btn btn-primary">
     </form>
 
 <!-- <div class="m-4">

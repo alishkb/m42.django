@@ -5,19 +5,31 @@
 {% endblock %}
 
 {% block content %}
-<div class="m-4">
-<p class="fs-4">{{ post.title }}</p>
-<p class="fs-5">{{ post.text|linebreaks }}</p><hr>
-<ul>
-    {% for comment in comments %}
-        <li>
-            <div>
-                <p class="fs-6">{{ comment.text|linebreaks }}</p>
+    <div class="m-4">
+        <p class="fs-4">{{ post.title }}</p>
+        <p class="fs-5">{{ post.text|linebreaks }}</p>
+        <p class="fs-6">نگارنده: {{ post.user }}</p>
+        {% if request.user.is_authenticated and request.user.id == post.user.id %}
+            <a href="{% url 'post:delete' post.user.id post.id %}">حذف</a>
+            <a href="{% url 'post:edit' post.user.id post.id %}">ویرایش</a>
+        {% endif %}<hr>
+
+        {% if request.user.is_authenticated %}
+        <form action="" method="post" novalidate class="col-md-6">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="ثبت" class="btn btn-primary">
+        </form>
+        {% else %}
+            <p>برای ثبت نظر، لازم است وارد «شابلاگ» شوید</p>
+        {% endif %}
+
+        {% for comment in comments %}
+            <div class="card-body bg-dark text-white">
+                <p class="card-title">{{ comment.user }}</p>
+                <p class="card-text">{{ comment.text|linebreaks }}</p>
                 <!-- <p class="fs-10">{{ comment.user }}</p> -->
-                <small>{{ comment.user }}</small>
-            </div>
-        </li>
-    {% endfor %}
-</ul>
-</div>
+            </div><br>
+        {% endfor %}
+    </div>
 {% endblock %}
