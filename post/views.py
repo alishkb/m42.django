@@ -16,26 +16,43 @@ class HomeView(generic.ListView):
     def get_queryset(self):
         return Post.objects.order_by('-pub_date')
 
-class PostView(generic.DetailView):
-    template_name = 'post/detail.html'
-    model = Post
-    def get_context_data(self, **kwargs):
-        context = super(PostView, self).get_context_data(**kwargs)
-        # post = context['post']
-        comments = Comment.objects.filter(post=self.object)
-        if self.request.method == 'POST':
-            form = AddCommentForm(self.request.POST)
-            if form.is_valid():
-                new_com = form.save(commit=False)
-                new_com.post = self.object
-                new_com.user = self.request.user
-                new_com.save()
-                messages.success(request, 'کامنت با موفقیت ثبت شد', 'success')
-        else:
-            form = AddCommentForm()
-            context['form'] = form
-        context['comments'] = comments
-        return context
+
+def PostView(request, post_id):
+    post = get_object_or_404(Post, id=post_id)    
+    comments = Comment.objects.filter(post=post)
+    if request.method == 'POST':
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            new_com = form.save(commit=False)
+            new_com.post = post
+            new_com.user = request.user
+            new_com.save()
+            messages.success(request, 'نظر شما با موفقیت ثبت شد', 'success')
+    else:
+        form = AddCommentForm()
+    return render(request, 'post/detail.html', {'post':post, 'comments':comments, 'form':form})
+
+# class PostView(generic.DetailView):
+#     template_name = 'post/detail.html'
+#     model = Post
+#     def get_context_data(self, **kwargs):
+#         context = super(PostView, self).get_context_data(**kwargs)
+#         request = self.request
+#         # post = context['post']
+#         comments = Comment.objects.filter(post=self.object)
+#         if request.method == 'POST':
+#             form = AddCommentForm(request.POST)
+#             if form.is_valid():
+#                 new_com = form.save(commit=False)
+#                 new_com.post = request.object
+#                 new_com.user = request.user
+#                 new_com.save()
+#                 messages.success(request, 'کامنت با موفقیت ثبت شد', 'success')
+#         else:
+#             form = AddCommentForm()
+#         context['form'] = form
+#         context['comments'] = comments
+#         return context
 
 @login_required    
 def CreatePost(request, user_id):
