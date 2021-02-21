@@ -45,6 +45,7 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'پست'
         verbose_name_plural = 'پست ها'
+        ordering = ('-pub_date', )
         # permission = [
         #     ("view_post_appact", "مشاهده پست های تایید شده و فعال"),
         #     ("approve_post", "تایید پست ها")
@@ -88,8 +89,9 @@ class Comment(models.Model):
     class Meta:
         verbose_name = 'نظر'
         verbose_name_plural = 'نظرات'
+        # ordering = ('',)
 
-    text = models.CharField(verbose_name='متن', max_length=500)
+    text = models.TextField(verbose_name='متن', max_length=500)
     approving = models.BooleanField(verbose_name='تایید پست', default=False)
     post = models.ForeignKey(Post, verbose_name='پست',
                              on_delete=models.CASCADE, related_name='comment_post')
@@ -97,6 +99,7 @@ class Comment(models.Model):
                              on_delete=models.CASCADE, related_name='comment_user')
     like_dislike = models.ManyToManyField(User, through='Like_Comment', through_fields=(
         'comment', 'user'), verbose_name='پسند', default=None, related_name='selection')
+    pub_date = models.DateTimeField(verbose_name='زمان انتشار', auto_now_add=True)
 
     def __str__(self):
         return self.text[:50] + '...'

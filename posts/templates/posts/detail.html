@@ -10,8 +10,8 @@
         <p class="fs-5">{{ post.text|linebreaks }}</p>
         <p class="fs-6">نگارنده: {{ post.user }}</p>
         {% if request.user.is_authenticated and request.user.id == post.user.id %}
-            <a href="{% url 'post:delete' post.user.id post.id %}">حذف</a>
-            <a href="{% url 'post:edit' post.user.id post.id %}">ویرایش</a>
+            <a href="{% url 'posts:delete' post.user.id post.id %}">حذف</a>
+            <a href="{% url 'posts:edit' post.user.id post.id %}">ویرایش</a>
         {% endif %}<hr>
 
         {% if request.user.is_authenticated %}

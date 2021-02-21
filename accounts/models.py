@@ -14,7 +14,7 @@ class User(AbstractBaseUser):
     email = models.EmailField(verbose_name='پست الکتریکی', unique=True, null=True, blank=True)
     # phone = PhoneField(verbose_name='تلفن همراه', blank=True,
     #                    help_text='Contact Phone Number!', unique=True)
-    phone = models.CharField(verbose_name='تلفن همراه', null=True, max_length=15)
+    phone = models.PositiveBigIntegerField(unique=True, verbose_name='تلفن همراه')
     image = models.ImageField(verbose_name='تصویر', upload_to='img/users/', null=True, blank=True)
     start_time = models.DateField(verbose_name='زمان ثبت نام', auto_now_add=True)
     login_time = models.DateField(verbose_name='زمان آخرین بازدید', auto_now=True, blank=True)

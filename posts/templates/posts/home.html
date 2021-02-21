@@ -25,7 +25,7 @@
 
 <div class="m-2">
     {% for post in all_posts %}
-        <div class="p-3 mb-2 bg-primary"><a href="{% url 'post:detail' post.id %}" class="text-white" style="text-decoration:none"> {{ post.title }}</a></div>
+        <div class="p-3 mb-2 " style="background-color: #59857b;"><a href="{% url 'posts:detail' post.id %}" class="text-white" style="text-decoration:none"> {{ post.title }}</a></div>
         <div class="p-3 mb-2 bg-white text-dark"> {{ post.text|linebreaks }} </div>
         <p class="p-3 fs-6">نگارنده: {{ post.user }}</p>
         <hr>

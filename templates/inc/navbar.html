@@ -1,17 +1,18 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="{% url 'post:home' %}" style="color: blue;">شابلاگ</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'posts:home' %}" style="color: blue;">شابلاگ</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       {% if request.user.is_authenticated %}
-      <a class="nav-item nav-link active" href="{% url 'post:create' request.user.id %}">پست جدید</a>
+      <a class="nav-item nav-link active" href="{% url 'posts:create' request.user.id %}">پست جدید</a>
       <a class="nav-item nav-link active" href="{% url 'accounts:dashboard' request.user.id %}">پروفایل</a>
       <a class="nav-item nav-link active" href="{% url 'accounts:logout'  %}">خروج</a>
+      <!-- <p> {{ request.user.last_name }} </p>       -->
       {% else %}
       <a class="nav-item nav-link active" href="{% url 'accounts:login' %}">ورود</a>
-      <a class="nav-item nav-link" href="{% url 'accounts:register' %}">ثبت نام</a>
+      <a class="nav-item nav-link active" href="{% url 'accounts:register' %}">ثبت نام</a>
       <!-- <a class="nav-item nav-link disabled" href="#">Disabled</a> -->
       {% endif %}
     </div>

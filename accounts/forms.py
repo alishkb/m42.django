@@ -48,17 +48,15 @@ class UserRegistrationForm(forms.Form):
     password = forms.CharField(label='password', max_length=20, widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder': 'Enter password'}))
     re_password = forms.CharField(label='confrim password', max_length=20, widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder': 're-Enter password'}))
 
-    # def clean_email(self):
-    #     email = self.cleaned_data.get('email')
-    #     user = User.objects.filter(email=email)
-    #     if user.exists():
-    #         raise forms.ValidationError('This email already exists')
-    #     return email
+class PhoneLoginForm(forms.Form):
+    phone = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ex: 0912 123 4567'}))
 
-    # def clean(self):
-    #     clean_data = super().clean()
-    #     p = clean_data.get('password')
-    #     rp =clean_data.get('re_password')
-    #     if p and rp:
-    #         if p != rp:
-    #             raise forms.ValidationError('passwords must match')
+    #for checking that this number is in db or not:
+    def clean_phone(self):
+        phone = User.objects.filter(phone=self.cleaned_data['phone'])
+        if not phone.exists():
+            raise forms.ValidationError('این شماره وجود ندارد')
+        return self.cleaned_data['phone']
+
+class VerifyPhoneForm(forms.Form):
+    code = forms.IntegerField()

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
-from post.models import Post, Comment
+from .models import Post, Comment
 from .forms import AddPostForm, EditPostForm, AddCommentForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -9,7 +9,7 @@ from .forms import AddCommentForm
 # Create your views here.
 
 class HomeView(generic.ListView):
-    template_name = 'post/home.html'
+    template_name = 'posts/home.html'
     context_object_name = 'all_posts'
     model = Post
     # template_name = 'post.comment_set.all'
@@ -30,7 +30,7 @@ def PostView(request, post_id):
             messages.success(request, 'نظر شما با موفقیت ثبت شد', 'success')
     else:
         form = AddCommentForm()
-    return render(request, 'post/detail.html', {'post':post, 'comments':comments, 'form':form})
+    return render(request, 'posts/detail.html', {'post':post, 'comments':comments, 'form':form})
 
 # class PostView(generic.DetailView):
 #     template_name = 'post/detail.html'
@@ -64,13 +64,13 @@ def CreatePost(request, user_id):
                 new_post.user = request.user
                 new_post.save()
                 messages.success(request, 'پست شما با موفقیت ذخیره شد', 'success')
-                return redirect('post:home')
+                return redirect('posts:home')
             # pass
         else:
             form = AddPostForm()
-        return render(request, 'post/create.html', {'form':form})
+        return render(request, 'posts/create.html', {'form':form})
     else:
-        return redirect('post:home')
+        return redirect('posts:home')
 
 @login_required
 def DeletePost(request, user_id, post_id):
@@ -94,10 +94,10 @@ def EditPost(request, user_id, post_id):
                 # re.text += (f'edited on {datetime.datetime.now()}')
                 # re.save()
                 messages.success(request, 'ویرایش پست با موفقیت انجام شد', 'success')
-                return redirect('post:detail', post.id)
+                return redirect('posts:detail', post.id)
         else:
             form = EditPostForm(instance=post)
-        return render(request, 'post/edit.html', {'form':form})
+        return render(request, 'posts/edit.html', {'form':form})
     else:
-        return redirect('post:home')
+        return redirect('posts:home')
 

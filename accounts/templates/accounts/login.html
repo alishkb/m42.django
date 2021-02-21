@@ -5,10 +5,14 @@
 {% block title %} Login {% endblock %}
 
 {% block content %}
-    <form action="" method="post" novalidate>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Login" class="btn btn-primary">
-    </form>
+    <div class="m-3">
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Login" class="btn btn-primary">
+        </form> <br>
+        <a href="{% url 'accounts:phone_login' %}" class="btn btn-outline-secondary">Login with Phone</a>
+    </div>
+
 {% endblock %}
     

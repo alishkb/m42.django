@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class PostConfig(AppConfig):
-    name = 'post'
+class PostsConfig(AppConfig):
+    name = 'posts'
     varbose_name = 'بلاگ - پست'
