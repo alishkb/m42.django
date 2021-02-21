@@ -60,8 +60,8 @@ class Post(models.Model):
         Category, verbose_name='دسته بندی', on_delete=models.CASCADE)
     user_comments = models.ManyToManyField(User, through='Comment', through_fields=(
         'post', 'user'), verbose_name='نظر', default=None, related_name='post_comment')
-    user_likes = models.ManyToManyField(User, through='Like_Post', through_fields=(
-        'post', 'user'), verbose_name='پسند', default=None, related_name='post_selection')
+    # user_likes = models.ManyToManyField(User, through='Like_Post', through_fields=(
+    #     'post', 'user'), verbose_name='پسند', default=None, related_name='post_selection')
     tag = models.ManyToManyField(Tag, verbose_name='برچسب')
     approving = models.BooleanField(verbose_name='تایید پست', default=False)
     activate = models.BooleanField(verbose_name='قابلیت نمایش', default=True)
@@ -70,6 +70,24 @@ class Post(models.Model):
     def __str__(self):
         return f'{self.title}: {self.text[:30]}'
 
+    def likes_count(self):
+        return self.plike.count()
+
+    def dislikes_count(self):
+        return self.pdislike.count()
+
+    def like_dislike(self, user):
+        like = user.ulike.all()
+        dislike = user.udislike.all()
+        can_like = like.filter(post=self)
+        can_dislike = dislike.filter(post=self)
+        if can_like.exists():
+            return 'can_dislike'
+        elif can_dislike.exists():
+            return 'can_like'
+        else:
+            return True
+
 
 class Like_Post(models.Model):
     class Meta:
@@ -77,12 +95,23 @@ class Like_Post(models.Model):
         verbose_name_plural = 'پسند پست ها'
         # unique_together = ['user', 'post']
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    selection = models.BooleanField(verbose_name='پسند', null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ulike')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='plike')
 
     def __str__(self):
-        return self.user + ' ' + self.post
+        return self.user.last_name + ': ' + self.post.title
+
+
+class Dislike_Post(models.Model):
+    class Meta:
+        verbose_name = 'ناپسند پست'
+        verbose_name_plural = 'ناپسند پست ها'
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='udislike')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='pdislike')
+
+    def __str__(self):
+        return self.user.last_name + ': ' + self.post.title
 
 
 class Comment(models.Model):
@@ -110,18 +139,23 @@ class Like_Comment(models.Model):
         verbose_name = 'پسند نظر'
         verbose_name_plural = 'پسند نظر ها'
         # unique_together = ['user', 'comment']
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    selection = models.BooleanField(verbose_name='پسند', null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='uclike')
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='cclike')
 
     def __str__(self):
-        return self.user + ' ' + self.comment
+        return self.user.last_name + ': ' + self.comment.post.title + ', ' + self.comment.text[:10]
 
 
+class Dislike_Comment(models.Model):
+    class Meta:
+        verbose_name = 'ناپسند نظر'
+        verbose_name_plural = 'ناپسند نظر ها'
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ucdislike')
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='ccdislike')
 
-
-
-
+    def __str__(self):
+        return self.user.last_name + ': ' + self.comment.post.title + ', ' + self.comment.text[:10]
 
 
 # class Like(models.Model):

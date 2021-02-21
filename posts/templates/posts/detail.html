@@ -12,6 +12,10 @@
         {% if request.user.is_authenticated and request.user.id == post.user.id %}
             <a href="{% url 'posts:delete' post.user.id post.id %}">حذف</a>
             <a href="{% url 'posts:edit' post.user.id post.id %}">ویرایش</a>
+        {% endif %}<br>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'posts:post_like' post.id %}" class="btn btn-pirmary {% if like_dislike == 'dislike' %} disabled {% endif %}">Like {{ post.likes_count }}</a>
+            <a href="{% url 'posts:post_dislike' post.id %}" class="btn btn-pirmary {% if like_dislike == 'like' %} disabled {% endif %}">Dislike {{ post.dislikes_count }}</a>
         {% endif %}<hr>
 
         {% if request.user.is_authenticated %}

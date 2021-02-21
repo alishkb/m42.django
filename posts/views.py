@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
-from .models import Post, Comment
+from .models import Post, Comment, Like_Post, Dislike_Post, Like_Comment, Dislike_Comment
 from .forms import AddPostForm, EditPostForm, AddCommentForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -20,6 +20,12 @@ class HomeView(generic.ListView):
 def PostView(request, post_id):
     post = get_object_or_404(Post, id=post_id)    
     comments = Comment.objects.filter(post=post)
+    like_dislike = True
+    if request.user.is_authenticated:
+        if post.like_dislike(request.user) == 'can_dislike':
+            like_dislike = 'dislike'
+        elif post.like_dislike(request.user) == 'can_like':
+            like_dislike = 'like'
     if request.method == 'POST':
         form = AddCommentForm(request.POST)
         if form.is_valid():
@@ -27,10 +33,11 @@ def PostView(request, post_id):
             new_com.post = post
             new_com.user = request.user
             new_com.save()
+            form = AddCommentForm()
             messages.success(request, 'نظر شما با موفقیت ثبت شد', 'success')
     else:
         form = AddCommentForm()
-    return render(request, 'posts/detail.html', {'post':post, 'comments':comments, 'form':form})
+    return render(request, 'posts/detail.html', {'post':post, 'comments':comments, 'form':form, 'like_dislike': like_dislike})
 
 # class PostView(generic.DetailView):
 #     template_name = 'post/detail.html'
@@ -101,3 +108,18 @@ def EditPost(request, user_id, post_id):
     else:
         return redirect('posts:home')
 
+@login_required
+def post_like(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    Dislike_Post.objects.filter(user=request.user, post=post).delete()
+    like = Like_Post(user=request.user, post=post)
+    like.save()
+    return redirect('posts:detail', post_id)
+
+@login_required
+def post_dislike(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    Like_Post.objects.filter(user=request.user, post=post).delete()
+    dislike = Dislike_Post(user=request.user, post=post)
+    dislike.save()
+    return redirect('posts:detail', post_id)

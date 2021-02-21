@@ -5,31 +5,32 @@
 {% endblock %}
 
 {% block content %}
+    <div class="p-3">
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            <!-- <div class="mb-3"> -->
+            {{ form.as_p }}
+            <!-- </div> -->
 
-    <form action="" method="post" novalidate>
-        {% csrf_token %}
-        <!-- <div class="mb-3"> -->
-        {{ form.as_p }}
-        <!-- </div> -->
+            <!-- {{ form.title.errors }}
+            <label for="form.title.id_for_label">عنوان</label>
+            {{ form.title }}<br>
+            {{ form.text.errors }}
+            <label for="form.text.id_for_label">متن</label>
+            {{ form.text }}<br> -->
+            <!-- {{ form.image.errors }}
+            <label for="form.image.id_for_label">تصویر</label>
+            {{ form.image }}<br> -->
+            <!-- {{ form.category.errors }}
+            <label for="form.category.id_for_label">دسته بندی</label>
+            {{ form.category }}<br>
+            {{ form.tag.errors }}
+            <label for="form.tag.id_for_label">برچسب</label>
+            {{ form.tag }}<br> -->
 
-        <!-- {{ form.title.errors }}
-        <label for="form.title.id_for_label">عنوان</label>
-        {{ form.title }}<br>
-        {{ form.text.errors }}
-        <label for="form.text.id_for_label">متن</label>
-        {{ form.text }}<br> -->
-        <!-- {{ form.image.errors }}
-        <label for="form.image.id_for_label">تصویر</label>
-        {{ form.image }}<br> -->
-        <!-- {{ form.category.errors }}
-        <label for="form.category.id_for_label">دسته بندی</label>
-        {{ form.category }}<br>
-        {{ form.tag.errors }}
-        <label for="form.tag.id_for_label">برچسب</label>
-        {{ form.tag }}<br> -->
-
-        <input type="submit" value="ثبت پست" class="btn btn-primary">
-    </form>
+            <input type="submit" value="ثبت پست" class="btn btn-primary">
+        </form>
+    </div>
 
 <!-- <div class="m-4">
 <form class="form-inline">

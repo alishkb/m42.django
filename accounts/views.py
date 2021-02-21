@@ -34,11 +34,14 @@ def user_register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = User.objects.create_user(cd['username'], cd['last_name'], cd['phone'], cd['password'])
-            # user.save()
-            login(request, user)
-            messages.success(request, f'اطلاعات شما با موفقیت ثبت شد {cd["username"]}', 'success')
-            return redirect('posts:home')
+            if cd['password'] == cd['re_password']:
+                user = User.objects.create_user(cd['username'], cd['last_name'], cd['phone'], cd['password'])
+                # user.save()
+                login(request, user)
+                messages.success(request, f'اطلاعات شما با موفقیت ثبت شد {cd["username"]}', 'success')
+                return redirect('posts:home')
+            else:
+                messages.error(request, 'رمز وارد شده با تکرار رمز یکسان نمیباشد', 'error')
     else:
         form = UserRegistrationForm()
     return render(request,'accounts/register.html', {'form':form})
