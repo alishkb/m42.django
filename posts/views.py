@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.defaulttags import register
 from django.views import generic
 from .models import Post, Comment, Like_Post, Dislike_Post, Like_Comment, Dislike_Comment
 from .forms import AddPostForm, EditPostForm, AddCommentForm
@@ -20,12 +21,7 @@ class HomeView(generic.ListView):
 def PostView(request, post_id):
     post = get_object_or_404(Post, id=post_id)    
     comments = Comment.objects.filter(post=post)
-    like_dislike = True
-    if request.user.is_authenticated:
-        if post.like_dislike(request.user) == 'can_dislike':
-            like_dislike = 'dislike'
-        elif post.like_dislike(request.user) == 'can_like':
-            like_dislike = 'like'
+
     if request.method == 'POST':
         form = AddCommentForm(request.POST)
         if form.is_valid():
@@ -37,7 +33,27 @@ def PostView(request, post_id):
             messages.success(request, 'نظر شما با موفقیت ثبت شد', 'success')
     else:
         form = AddCommentForm()
-    return render(request, 'posts/detail.html', {'post':post, 'comments':comments, 'form':form, 'like_dislike': like_dislike})
+
+    like_dislike = True
+    c_like_dislike = {}
+    if request.user.is_authenticated:
+        if post.like_dislike(request.user) == 'can_dislike':
+            like_dislike = 'dislike'
+        elif post.like_dislike(request.user) == 'can_like':
+            like_dislike = 'like'
+        for comment in comments:
+            clike = True
+            if comment.like_dislike(request.user) == 'can_dislike':
+                clike = 'dislike'
+            elif comment.like_dislike(request.user) == 'can_like':
+                clike = 'like'
+            c_like_dislike[comment] = clike
+
+    @register.filter
+    def get_item(dict, key):
+        return dict.get(key)
+    
+    return render(request, 'posts/detail.html', {'post':post, 'comments':comments, 'form':form, 'like_dislike': like_dislike, 'clike': c_like_dislike})
 
 # class PostView(generic.DetailView):
 #     template_name = 'post/detail.html'
@@ -121,5 +137,21 @@ def post_dislike(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     Like_Post.objects.filter(user=request.user, post=post).delete()
     dislike = Dislike_Post(user=request.user, post=post)
+    dislike.save()
+    return redirect('posts:detail', post_id)
+
+@login_required
+def comment_like(request, post_id, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    Dislike_Comment.objects.filter(user=request.user, comment=comment).delete()
+    like = Like_Comment(user=request.user, comment=comment)
+    like.save()
+    return redirect('posts:detail', post_id)
+
+@login_required
+def comment_dislike(request, post_id, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    Like_Comment.objects.filter(user=request.user, comment=comment).delete()
+    dislike = Dislike_Comment(user=request.user, comment=comment)
     dislike.save()
     return redirect('posts:detail', post_id)

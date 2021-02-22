@@ -6,32 +6,40 @@
 
 {% block content %}
     <div class="m-4">
-        <p class="fs-4">{{ post.title }}</p>
-        <p class="fs-5">{{ post.text|linebreaks }}</p>
-        <p class="fs-6">نگارنده: {{ post.user }}</p>
-        {% if request.user.is_authenticated and request.user.id == post.user.id %}
-            <a href="{% url 'posts:delete' post.user.id post.id %}">حذف</a>
-            <a href="{% url 'posts:edit' post.user.id post.id %}">ویرایش</a>
-        {% endif %}<br>
-        {% if request.user.is_authenticated %}
-            <a href="{% url 'posts:post_like' post.id %}" class="btn btn-pirmary {% if like_dislike == 'dislike' %} disabled {% endif %}">Like {{ post.likes_count }}</a>
-            <a href="{% url 'posts:post_dislike' post.id %}" class="btn btn-pirmary {% if like_dislike == 'like' %} disabled {% endif %}">Dislike {{ post.dislikes_count }}</a>
-        {% endif %}<hr>
-
-        {% if request.user.is_authenticated %}
-        <form action="" method="post" novalidate class="col-md-6">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="ثبت" class="btn btn-primary">
-        </form>
-        {% else %}
-            <p>برای ثبت نظر، لازم است وارد «شابلاگ» شوید</p>
-        {% endif %}
+        <div class="p-3 bg-secondary text-white">
+            <p class="fs-4 text-center bg-light text-dark">{{ post.title }}</p>
+            <p>{{ post.text|linebreaks }}</p>
+            <p>نگارنده: {{ post.user }}</p>
+            {% if request.user.is_authenticated and request.user.id == post.user.id %}
+                <a href="{% url 'posts:edit' post.user.id post.id %}" class="btn btn-warning">ویرایش</a>
+                <a href="{% url 'posts:delete' post.user.id post.id %}" class="btn btn-danger">حذف</a>
+            {% endif %} <br>
+            {% if request.user.is_authenticated %}
+                <br>
+                <a href="{% url 'posts:post_like' post.id %}" class="btn btn-light {% if like_dislike == 'dislike' %} disabled {% endif %}">Like {{ post.likes_count }}</a>
+                <a href="{% url 'posts:post_dislike' post.id %}" class="btn btn-light {% if like_dislike == 'like' %} disabled {% endif %}">Dislike {{ post.dislikes_count }}</a>
+            {% endif %}
+        </div> <br>
+            {% if request.user.is_authenticated %}
+            <form action="" method="post" novalidate class="px-3 col-md-6">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="ثبت" class="btn btn-primary">
+            
+            </form>
+            {% else %}
+                <p class="px-3">برای ثبت نظر، لازم است وارد «شابلاگ» شوید</p>
+            {% endif %}
         <br>
         {% for comment in comments %}
-            <div class="card-body bg-dark text-white">
-                <p class="card-title">{{ comment.user }}</p>
+            <div class="card-body bg-light text-dark">
+                <p class="card-title">{{ comment.user }}</p><hr>
                 <p class="card-text">{{ comment.text|linebreaks }}</p>
+                {% if request.user.is_authenticated %}
+                    <br>
+                    <a href="{% url 'posts:comment_like' post.id comment.id %}" class="btn btn-light {% if clike|get_item:comment == 'dislike' %} disabled {% endif %}">Like {{ comment.likes_count }}</a>
+                    <a href="{% url 'posts:comment_dislike' post.id comment.id %}" class="btn btn-light {% if clike|get_item:comment == 'like' %} disabled {% endif %}">Dislike {{ comment.dislikes_count }}</a>
+                {% endif %}
                 <!-- <p class="fs-10">{{ comment.user }}</p> -->
             </div><br>
         {% endfor %}

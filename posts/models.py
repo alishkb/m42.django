@@ -133,6 +133,24 @@ class Comment(models.Model):
     def __str__(self):
         return self.text[:50] + '...'
 
+    def likes_count(self):
+        return self.cclike.count()
+
+    def dislikes_count(self):
+        return self.ccdislike.count()
+
+    def like_dislike(self, user):
+        like = user.uclike.all()
+        dislike = user.ucdislike.all()
+        can_like = like.filter(comment=self)
+        can_dislike = dislike.filter(comment=self)
+        if can_like.exists():
+            return 'can_dislike'
+        elif can_dislike.exists():
+            return 'can_like'
+        else:
+            return True
+
 
 class Like_Comment(models.Model):
     class Meta:
