@@ -3,9 +3,11 @@
 {% block title %} Verify Phone Login {% endblock %}
 
 {% block content %}
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="ثبت">
-    </form>
+    <div class="m-3">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="ثبت">
+        </form>
+    </div>
 {% endblock %}
