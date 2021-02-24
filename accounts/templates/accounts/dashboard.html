@@ -10,6 +10,7 @@
             <p class="card-body">
                 <div class="p-3 mb-2 bg-primary"><a href="{% url 'posts:detail' post.id %}" class="text-white" style="text-decoration:none"> {{ post.title }}</a></div>
                 <div class="p-3 mb-2 bg-white text-dark"> {{ post.text|linebreaks }} </div>
+                <p class="p-3 ">وضعیت پست: {% if post.approving == True %} تایید شده {% else %} تایید نشده {% endif %}</p>
                 {% empty %}
                 <p class="p-3 mb-2 bg-white text-dark">شما هیج پستی ندارید!</p>
             </p>

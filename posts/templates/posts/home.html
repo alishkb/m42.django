@@ -25,17 +25,21 @@
 
 <div class="m-2">
     {% for post in all_posts %}
-        <div class="p-3" style="background-color: #426175;"><a href="{% url 'posts:detail' post.id %}" class="text-white" style="text-decoration:none"> {{ post.title }}</a></div>
-        <div class="p-3" style="background-color: #c6d0d6;"> {{ post.text|linebreaks }} </div>
-        <div class="p-3" style="background-color: #c6d0d6;">نگارنده: {{ post.user }}</div>
-        {% if request.user.is_authenticated %}
-            <div class="" style="background-color: #c6d0d6;">
-                <a href="{% url 'posts:post_like' post.id %}" class="btn btn-pirmary disabled">Like {{ post.likes_count }}</a>
-                <a href="{% url 'posts:post_dislike' post.id %}" class="btn btn-pirmary disabled">Dislike {{ post.dislikes_count }}</a>
-            </div>
-        {% endif %}
-        
-        <hr>
+        {% if post.approving %}
+            <div class="p-3" style="background-color: #426175;"><a href="{% url 'posts:detail' post.id %}" class="text-white" style="text-decoration:none"> {{ post.title }}</a></div>
+            <div class="p-3" style="background-color: #c6d0d6;"> {{ post.text|linebreaks }} </div>
+            <div class="p-3" style="background-color: #c6d0d6;">نگارنده: {{ post.user }}</div>
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="">
+            {% endif %}
+            {% if request.user.is_authenticated %}
+                <div class="" style="background-color: #c6d0d6;">
+                    <a href="{% url 'posts:post_like' post.id %}" class="btn btn-pirmary disabled">Like {{ post.likes_count }}</a>
+                    <a href="{% url 'posts:post_dislike' post.id %}" class="btn btn-pirmary disabled">Dislike {{ post.dislikes_count }}</a>
+                </div>
+            {% endif %}
+        {% endif %}      
+            <hr>
     {% endfor %}
 </div>
 {% endblock %}
