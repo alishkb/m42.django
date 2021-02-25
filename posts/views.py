@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.defaulttags import register
 from django.views import generic
-from .models import Post, Comment, Like_Post, Dislike_Post, Like_Comment, Dislike_Comment
+from .models import Post, Comment, Like_Post, Dislike_Post, Like_Comment, Dislike_Comment, Category
 from .forms import AddPostForm, EditPostForm, AddCommentForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -9,13 +9,23 @@ import datetime
 from .forms import AddCommentForm
 # Create your views here.
 
-class HomeView(generic.ListView):
-    template_name = 'posts/home.html'
-    context_object_name = 'all_posts'
-    model = Post
-    # template_name = 'post.comment_set.all'
-    def get_queryset(self):
-        return Post.objects.order_by('-pub_date')
+
+def HomeView(request, cat_id=None):
+    posts = Post.objects.filter(approving=True)
+    categories = Category.objects.filter(is_fcat=True).order_by('name')
+    if cat_id:
+        category = get_object_or_404(Category, id=cat_id)
+        posts = posts.filter(category=category)
+    return render(request, 'posts/home.html', {'posts':posts, 'categories': categories})
+
+
+# class HomeView(generic.ListView):
+#     template_name = 'posts/home.html'
+#     context_object_name = 'posts'
+#     model = Post
+#     # template_name = 'post.comment_set.all'
+#     def get_queryset(self):
+#         return Post.objects.order_by('-pub_date')
 
 
 def PostView(request, post_id):

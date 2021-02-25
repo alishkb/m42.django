@@ -3,39 +3,43 @@ from django.utils import timezone
 from phone_field import PhoneField
 from accounts.models import User
 from django.contrib.auth.models import AbstractBaseUser
+from django.urls import reverse
 
 # Create your models here.
 
 
-class FatherCat(models.Model):
-    class Meta:
-        verbose_name = 'بالا دسته بندی'
-        verbose_name_plural = 'بالا دسته بندی ها'
+# class FatherCat(models.Model):
+#     class Meta:
+#         verbose_name = 'بالا دسته بندی'
+#         verbose_name_plural = 'بالا دسته بندی ها'
 
-    name = models.CharField(verbose_name='بالادسته', max_length=100, unique=True)
+#     name = models.CharField(verbose_name='بالادسته', max_length=100, unique=True)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 
 class Category(models.Model):
     class Meta:
         verbose_name = 'دسته بندی'
         verbose_name_plural = 'دسته بندی ها'
-
+        # ordering = ('name',)
     name = models.CharField(verbose_name='دسته', max_length=100, unique=True)
-    fatherCat = models.ForeignKey(FatherCat, on_delete=models.CASCADE, null=True, blank=True, verbose_name='بالا دسته بندی')
+    fatherCat = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='scat', verbose_name='بالا دسته بندی')
+    is_fcat = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('posts:cat_filter', args=[self.id,])
 
 class Tag(models.Model):
     class Meta:
         verbose_name = 'برچسب'
         verbose_name_plural = 'برچسب ها'
 
-    name = models.CharField(verbose_name='چسب', max_length=30)
+    name = models.CharField(verbose_name='چسب', max_length=30, unique=True)
 
     def __str__(self):
         return self.name

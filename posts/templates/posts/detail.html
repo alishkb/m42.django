@@ -9,6 +9,9 @@
         <div class="p-3 bg-secondary text-white">
             <p class="fs-4 text-center bg-light text-dark">{{ post.title }}</p>
             <p>{{ post.text|linebreaks }}</p>
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="">
+            {% endif %}
             <p>نگارنده: {{ post.user }}</p>
             {% if request.user.is_authenticated and request.user.id == post.user.id %}
                 <a href="{% url 'posts:edit' post.user.id post.id %}" class="btn btn-warning">ویرایش</a>

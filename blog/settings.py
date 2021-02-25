@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'posts.apps.PostsConfig',
     'accounts.apps.AccountsConfig',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [

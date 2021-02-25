@@ -1,45 +1,39 @@
 {% extends 'base.html' %}
+{% load thumbnail %}
 
 {% block title %}
  شابلاگ
 {% endblock %}
 
 {% block content %}
-
-<!-- <div id="list-example" class="list-group">
-    {% for post in all_posts %}
-    <a class="list-group-item list-group-item-action" href="#list-item-{{ post.id }}">{{ post.title }}</a>
+    {% for category in categories %}
+        <div class="p-3 btn-group">
+            <a href="{{ category.get_absolute_url }}" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> {{ category.name }} </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
+            {% for sub in category.scat.all %}
+                <li><a class="dropdown-item" href="{{ sub.get_absolute_url }}">{{ sub.name }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
     {% endfor %}
-</div>
-
-
-<div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" class="scrollspy-example" tabindex="0">
-    {% for post in all_posts %}
-    <h4 id="list-item-{{ post.id }}">{{ post.title }}</h4>
-    <p>{{ post.text }}</p>
-    {% endfor %}
-</div> -->
-
-
-
-
-<div class="m-2">
-    {% for post in all_posts %}
-        {% if post.approving %}
+    <div class="m-2">
+        {% for post in posts %}
             <div class="p-3" style="background-color: #426175;"><a href="{% url 'posts:detail' post.id %}" class="text-white" style="text-decoration:none"> {{ post.title }}</a></div>
             <div class="p-3" style="background-color: #c6d0d6;"> {{ post.text|linebreaks }} </div>
             <div class="p-3" style="background-color: #c6d0d6;">نگارنده: {{ post.user }}</div>
             {% if post.image %}
-                <img src="{{ post.image.url }}" alt="">
+                {% thumbnail post.image "300x300" as img %}
+                    <img src="{{ post.image.url }}" alt="">
+                {% endthumbnail %}
             {% endif %}
             {% if request.user.is_authenticated %}
                 <div class="" style="background-color: #c6d0d6;">
                     <a href="{% url 'posts:post_like' post.id %}" class="btn btn-pirmary disabled">Like {{ post.likes_count }}</a>
                     <a href="{% url 'posts:post_dislike' post.id %}" class="btn btn-pirmary disabled">Dislike {{ post.dislikes_count }}</a>
                 </div>
-            {% endif %}
-        {% endif %}      
+            {% endif %}    
             <hr>
-    {% endfor %}
-</div>
+        {% endfor %}
+    </div>
 {% endblock %}
