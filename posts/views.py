@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.defaulttags import register
 from django.views import generic
 from .models import Post, Comment, Like_Post, Dislike_Post, Like_Comment, Dislike_Comment, Category, Tag
-from .forms import AddPostForm, EditPostForm, AddCommentForm
+from .forms import AddPostForm, EditPostForm, AddCommentForm, EditCommentForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import datetime
@@ -152,6 +152,21 @@ def post_dislike(request, post_id):
     dislike = Dislike_Post(user=request.user, post=post)
     dislike.save()
     return redirect('posts:detail', post_id)
+
+def EditComment(request, user_id, comment_id):
+    if user_id == request.user.id:
+        comment = get_object_or_404(Comment, pk=comment_id)
+        if request.method == 'POST':
+            form = EditCommentForm(request.POST, instance=comment)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'ویرایش نظر با موفقیت انجام شد', 'success')
+                return redirect('posts:detail', comment.post.id)
+        else:
+            form = EditCommentForm(instance=comment)
+        return render(request, 'posts/edit.html', {'form':form})
+    else:
+        return redirect('posts:home')
 
 @login_required
 def comment_like(request, post_id, comment_id):

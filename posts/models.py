@@ -39,6 +39,7 @@ class Tag(models.Model):
     class Meta:
         verbose_name = 'برچسب'
         verbose_name_plural = 'برچسب ها'
+        ordering = ('name',)
 
     name = models.CharField(verbose_name='چسب', max_length=30, unique=True)
 

@@ -32,4 +32,12 @@ class AddCommentForm(forms.ModelForm):
         # help_texts = {
         #     'text': 'max 500 char'
         # }
+
+class EditCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text',)
+        widgets = {
+            'text': forms.Textarea(attrs={'class':'form-control'})
+        }
         
