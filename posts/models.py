@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from phone_field import PhoneField
 from accounts.models import User
+# from django.conf import settings # replace User by settings.AUTH_USER_MODEL
 from django.contrib.auth.models import AbstractBaseUser
 from django.urls import reverse
 
@@ -44,6 +45,9 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('posts:tag_filter', args=[self.id,])
+
 
 class Post(models.Model):
     class Meta:
@@ -66,7 +70,7 @@ class Post(models.Model):
         'post', 'user'), verbose_name='نظر', default=None, related_name='post_comment')
     # user_likes = models.ManyToManyField(User, through='Like_Post', through_fields=(
     #     'post', 'user'), verbose_name='پسند', default=None, related_name='post_selection')
-    tag = models.ManyToManyField(Tag, verbose_name='برچسب')
+    tag = models.ManyToManyField(Tag, verbose_name='برچسب', blank=True)
     approving = models.BooleanField(verbose_name='تایید پست', default=False)
     activate = models.BooleanField(verbose_name='قابلیت نمایش', default=True)
     pub_date = models.DateTimeField(verbose_name='زمان انتشار', auto_now_add=True)

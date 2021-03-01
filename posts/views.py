@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.defaulttags import register
 from django.views import generic
-from .models import Post, Comment, Like_Post, Dislike_Post, Like_Comment, Dislike_Comment, Category
+from .models import Post, Comment, Like_Post, Dislike_Post, Like_Comment, Dislike_Comment, Category, Tag
 from .forms import AddPostForm, EditPostForm, AddCommentForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -10,12 +10,15 @@ from .forms import AddCommentForm
 # Create your views here.
 
 
-def HomeView(request, cat_id=None):
+def HomeView(request, cat_id=None, tag_id=None):
     posts = Post.objects.filter(approving=True)
     categories = Category.objects.filter(is_fcat=True).order_by('name')
     if cat_id:
         category = get_object_or_404(Category, id=cat_id)
         posts = posts.filter(category=category)
+    elif tag_id:
+        tag = get_object_or_404(Tag, id=tag_id)
+        posts = posts.filter(tag=tag)
     return render(request, 'posts/home.html', {'posts':posts, 'categories': categories})
 
 
