@@ -8,7 +8,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import datetime
 from .forms import AddCommentForm
-from django.db.models import Q
+from django.contrib.postgres.search import TrigramSimilarity
+from django.db.models.functions import Greatest
+# from django.contrib.postgres.search import SearchVector
+# from django.db.models import Q
 # Create your views here.
 
 
@@ -20,7 +23,33 @@ def HomeView(request, cat_id=None, tag_id=None, user_id=None):
         form = SearchForm(request.GET)
         if form.is_valid():
             cd = form.cleaned_data['search']
-            posts = posts.filter(Q(title__icontains=cd) | Q(text__icontains=cd))
+            # if 'sub' in request.GET:
+            sub = form.cleaned_data['sub']
+            print(sub)
+            print(cd)
+            if sub == 'all':
+                posts = posts.annotate(similarity=Greatest(
+                    TrigramSimilarity('title', cd),
+                    TrigramSimilarity('text', cd),
+                    TrigramSimilarity('user__last_name', cd),
+                    TrigramSimilarity('user__first_name', cd),
+                    TrigramSimilarity('tag__name', cd),
+                )).filter(similarity__gt=0.1).order_by('-similarity')
+            elif sub == 'user':
+                posts = posts.annotate(similarity=Greatest(
+                    TrigramSimilarity('user__last_name', cd),
+                    TrigramSimilarity('user__first_name', cd),
+                )).filter(similarity__gt=0.1).order_by('-similarity')
+            else:
+                posts = posts.annotate(similarity=TrigramSimilarity(form.cleaned_data['sub'],cd),).filter(similarity__gt=0.1).order_by('-similarity')
+            
+
+            # posts = posts.annotate(search=SearchVector('title', 'text', 'user__last_name', 'user__first_name', 'tag__name')).filter(search=cd)
+
+            # if 'sub' in request.GET:
+            #     print([i for i in form.cleaned_data['sub']])
+            # # else:
+            # posts = posts.filter(Q(title__icontains=cd) | Q(text__icontains=cd) | Q(user__last_name__icontains=cd) | Q(user__first_name__icontains=cd) | Q(tag__name__icontains=cd))
     if cat_id:
         category = get_object_or_404(Category, id=cat_id)
         posts = posts.filter(category=category)

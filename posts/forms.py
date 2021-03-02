@@ -43,4 +43,12 @@ class EditCommentForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     search = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    options = (
+        ('all', 'همه موارد'),
+        ('title', 'عنوان'),
+        ('text', 'متن'),
+        ('tag__name', 'برچسب'),
+        ('user', 'نویسنده'),
+    )
+    sub = forms.ChoiceField(widget=forms.Select(attrs={'class':'form-control'}), choices = options)
         

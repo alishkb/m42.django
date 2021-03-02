@@ -69,8 +69,6 @@ class Post(models.Model):
         Category, verbose_name='دسته بندی', on_delete=models.CASCADE)
     user_comments = models.ManyToManyField(User, through='Comment', through_fields=(
         'post', 'user'), verbose_name='نظر', default=None, related_name='post_comment')
-    # user_likes = models.ManyToManyField(User, through='Like_Post', through_fields=(
-    #     'post', 'user'), verbose_name='پسند', default=None, related_name='post_selection')
     tag = models.ManyToManyField(Tag, verbose_name='برچسب', blank=True)
     approving = models.BooleanField(verbose_name='تایید پست', default=False)
     activate = models.BooleanField(verbose_name='قابلیت نمایش', default=True)

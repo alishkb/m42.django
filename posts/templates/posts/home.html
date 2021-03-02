@@ -22,6 +22,7 @@
             <div class="form-group">
                 {{ form.search.errors }}
                 {{ form.search }}
+                {{ form.sub }}
             </div>
             <input type="submit" value="جستجو" class="btn btn-light">
         </form>
@@ -42,7 +43,8 @@
                     <div class="p-3 d-inline">
                         <a href="{{ tag.get_absolute_url }}" class="text-reset text-decoration-none"> #{{ tag.name }} </a>
                     </div>
-                {% endfor %}<hr class="my-2">
+                {% endfor %}
+                <div class="px-3">دسته بندی: {{ post.category }}</div><hr class="my-2">
                 <div class="px-3 row">
                     {% if request.user.is_authenticated %}
                         <div class='col-2'>
