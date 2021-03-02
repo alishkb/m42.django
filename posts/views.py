@@ -2,24 +2,35 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.defaulttags import register
 from django.views import generic
 from .models import Post, Comment, Like_Post, Dislike_Post, Like_Comment, Dislike_Comment, Category, Tag
-from .forms import AddPostForm, EditPostForm, AddCommentForm, EditCommentForm
+from .forms import AddPostForm, EditPostForm, AddCommentForm, EditCommentForm, SearchForm
+from accounts.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import datetime
 from .forms import AddCommentForm
+from django.db.models import Q
 # Create your views here.
 
 
-def HomeView(request, cat_id=None, tag_id=None):
+def HomeView(request, cat_id=None, tag_id=None, user_id=None):
     posts = Post.objects.filter(approving=True)
-    categories = Category.objects.filter(is_fcat=True).order_by('name')
+    categories = Category.objects.filter(is_fcat=True)
+    form = SearchForm()
+    if 'search' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            cd = form.cleaned_data['search']
+            posts = posts.filter(Q(title__icontains=cd) | Q(text__icontains=cd))
     if cat_id:
         category = get_object_or_404(Category, id=cat_id)
         posts = posts.filter(category=category)
     elif tag_id:
         tag = get_object_or_404(Tag, id=tag_id)
         posts = posts.filter(tag=tag)
-    return render(request, 'posts/home.html', {'posts':posts, 'categories': categories})
+    if user_id:
+        user = get_object_or_404(User, id=user_id)
+        posts = posts.filter(user=user)
+    return render(request, 'posts/home.html', {'posts':posts, 'categories': categories, 'form':form})
 
 
 # class HomeView(generic.ListView):

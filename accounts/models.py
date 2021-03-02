@@ -41,3 +41,6 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
+    
+    def get_absolute_url(self):
+        return reverse('posts:user_filter', args=[self.id,])

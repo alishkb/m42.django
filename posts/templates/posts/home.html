@@ -17,7 +17,17 @@
             </ul>
         </div>
     {% endfor %}
-    <div class="m-2">
+    <div class="px-3">
+        <form action="">
+            <div class="form-group">
+                {{ form.search.errors }}
+                {{ form.search }}
+            </div>
+            <input type="submit" value="جستجو" class="btn btn-light">
+        </form>
+    </div>
+
+    <div class="m-3">
         {% for post in posts %}
             <div style="background-color: #c6d0d6;">
                 <div class="p-3" style="background-color: #426175;"><a href="{% url 'posts:detail' post.id %}" class="text-white" style="text-decoration:none"> {{ post.title }}</a></div>
@@ -33,12 +43,15 @@
                         <a href="{{ tag.get_absolute_url }}" class="text-reset text-decoration-none"> #{{ tag.name }} </a>
                     </div>
                 {% endfor %}<hr class="my-2">
-                <div class="px-3 d-inline">
+                <div class="px-3 row">
                     {% if request.user.is_authenticated %}
-                        <a href="{% url 'posts:post_like' post.id %}" class="btn disabled">Like {{ post.likes_count }}</a>
-                        <a href="{% url 'posts:post_dislike' post.id %}" class="btn disabled">Dislike {{ post.dislikes_count }}</a>
+                        <div class='col-2'>
+                            <a href="{% url 'posts:post_like' post.id %}" class="btn disabled">Like {{ post.likes_count }}</a>
+                            <a href="{% url 'posts:post_dislike' post.id %}" class="btn disabled">Dislike {{ post.dislikes_count }}</a>
+                        </div>
+                        <div class="col-8"></div>
                     {% endif %}
-                    نگارنده: {{ post.user }}
+                    <a href="{% url 'posts:user_filter' post.user.id %}" class="col-2 text-decoration-none" style="color: #426175;">{{ post.user }}</a>
                 
                 </div>
             </div> <hr>

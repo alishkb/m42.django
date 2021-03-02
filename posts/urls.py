@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.HomeView, name='home'),
     path('category/<int:cat_id>', views.HomeView, name='cat_filter'),
     path('tag/<int:tag_id>', views.HomeView, name='tag_filter'),
+    path('user/<int:user_id>', views.HomeView, name='user_filter'),
     path('post_detail/<int:post_id>/', views.PostView, name='detail'),
     path('post_create/<int:user_id>', views.CreatePost, name='create'),
     path('post_delete/<int:user_id>/<int:post_id>/', views.DeletePost, name='delete'),

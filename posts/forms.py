@@ -40,4 +40,7 @@ class EditCommentForm(forms.ModelForm):
         widgets = {
             'text': forms.Textarea(attrs={'class':'form-control'})
         }
+
+class SearchForm(forms.Form):
+    search = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
         

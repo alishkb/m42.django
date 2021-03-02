@@ -24,7 +24,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'دسته بندی'
         verbose_name_plural = 'دسته بندی ها'
-        # ordering = ('name',)
+        ordering = ('name',)
     name = models.CharField(verbose_name='دسته', max_length=100, unique=True)
     fatherCat = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='scat', verbose_name='بالا دسته بندی')
     is_fcat = models.BooleanField(default=False)
