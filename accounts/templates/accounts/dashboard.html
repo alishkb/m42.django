@@ -3,22 +3,35 @@
 {% block title %} {{ user.username }} Profile {% endblock %}
 
 {% block content %}
- 
-    <p class="p-3 bg-dark text-white"> {{ user.last_name }} </p>
+    {% if user.image %}
+        <div class="bg-dark">
+            <img src="{{ user.image.url }}" alt="" width="75" height="75" class="rounded mx-auto d-block">
+        </div>
+    {% endif %}
+    <p class="px-3 text-white bg-dark"> {{ user.last_name }} </p>
+        
     {% for post in posts %}
         <div class="card">
-            <!-- <p class="card-body"> -->
-                <div class="p-3 mb-2" style="background-color: #4987a0;"><a href="{% url 'posts:detail' post.id %}" class="text-white" style="text-decoration:none"> {{ post.title }}</a></div>
-                <div class="p-3 mb-2 bg-white text-dark"> {{ post.text|linebreaks }} </div>
-                {% if post.image %}
-                    <img src="{{ post.image.url }}" alt="">
-                {% endif %}
-                <p class="p-3 ">وضعیت پست: {% if post.approving == True %} تایید شده {% else %} تایید نشده {% endif %}</p>
-                {% empty %}
-                <p class="p-3 mb-2 bg-white text-dark">شما هیج پستی ندارید!</p>
-            <!-- </p> -->
-            
+            <div class="p-3 mb-2" style="background-color: #4987a0;"><a href="{% url 'posts:detail' post.id %}" class="text-white" style="text-decoration:none"> {{ post.title }}</a></div>
+            <div class="p-3 mb-2 bg-white text-dark"> {{ post.text|linebreaks }} </div>
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="">
+            {% endif %}
+            <p class="p-3 ">وضعیت پست: {% if post.approving == True %} تایید شده {% else %} تایید نشده {% endif %}</p>
+            {% empty %}
+            <p class="p-3 mb-2 bg-white text-dark">شما هیج پستی ندارید!</p>        
         </div>
     {% endfor %}
-
+    <hr>
+    <div class="p-3 bg-dark text-white container">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="row justify-content-md-center">
+                <div class="col col-4">
+                    {{ form }}
+                </div>
+            </div> 
+            <input type="submit" value="Confrim" class="btn btn-primary">
+        </form>
+    </div>
 {% endblock %}

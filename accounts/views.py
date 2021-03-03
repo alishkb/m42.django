@@ -4,7 +4,7 @@ from django.contrib import messages
 # from django.contrib.auth.models import User
 from .models import User
 from posts.models import Post
-from .forms import UserLoginForm, UserRegistrationForm, PhoneLoginForm, VerifyPhoneForm
+from .forms import UserLoginForm, UserRegistrationForm, PhoneLoginForm, VerifyPhoneForm, UserDashboardForm
 from django.contrib.auth.decorators import login_required
 from random import randint
 from kavenegar import *
@@ -56,7 +56,14 @@ def user_logout(request):
 def user_dashboard(request, user_id):
     user = get_object_or_404(User, id=user_id)
     posts = Post.objects.filter(user=user)
-    return render(request, 'accounts/dashboard.html', {'user': user, 'posts': posts})
+    if request.method == 'POST':
+        form = UserDashboardForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'اطلاعات کاربر با موفقیت به روزرسانی شد', 'success')
+    else:
+        form = UserDashboardForm(instance=user)
+    return render(request, 'accounts/dashboard.html', {'user': user, 'posts': posts, 'form':form})
 
 def phone_login(request):
     if request.method == 'POST':

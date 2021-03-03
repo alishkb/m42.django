@@ -48,6 +48,27 @@ class UserRegistrationForm(forms.Form):
     password = forms.CharField(label='password', max_length=20, widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder': 'Enter password'}))
     re_password = forms.CharField(label='confrim password', max_length=20, widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder': 're-Enter password'}))
 
+class UserDashboardForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'image')
+        widgets = {
+            'username': forms.TextInput(attrs={'class':'form-control'}),
+            'first_name': forms.TextInput(attrs={'class':'form-control'}),
+            'last_name': forms.TextInput(attrs={'class':'form-control'}),
+            'email': forms.EmailInput(attrs={'class':'form-control'}),
+            'phone': forms.TextInput(attrs={'class':'form-control'}),
+            'image': forms.FileInput(attrs={'class':'form-control'}),
+        }
+    # username = forms.CharField(max_length=20, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter username'}), required=False)
+    # first_name = forms.CharField(label='first name', max_length=100, widget= forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter first name'}), required=False)
+    # last_name = forms.CharField(label='last name', max_length=100, widget= forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter last name'}), required=False)
+    # email = forms.EmailField(max_length=50, widget=forms.EmailInput(attrs={'class':'form-control', 'placeholder':'Enter Email'}), required=False)
+    # phone = forms.CharField(label='phone', max_length=15, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter phone'}), required=False)
+    # image = forms.ImageField(label='image', required=False)
+    # password = forms.CharField(label='password', max_length=20, widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder': 'Enter password'}))
+    # re_password = forms.CharField(label='confrim password', max_length=20, widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder': 're-Enter password'})) 
+
 class PhoneLoginForm(forms.Form):
     phone = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ex: 0912 123 4567'}))
 
