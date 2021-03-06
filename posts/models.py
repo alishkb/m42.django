@@ -55,6 +55,9 @@ class Post(models.Model):
         verbose_name = 'پست'
         verbose_name_plural = 'پست ها'
         ordering = ('-pub_date', )
+        permissions = [
+            ('accept_post', 'تایید پست'),
+        ]
         # permission = [
         #     ("view_post_appact", "مشاهده پست های تایید شده و فعال"),
         #     ("approve_post", "تایید پست ها")
@@ -125,6 +128,9 @@ class Comment(models.Model):
     class Meta:
         verbose_name = 'نظر'
         verbose_name_plural = 'نظرات'
+        permissions = [
+            ('accept_comment', 'تایید نظر'),
+        ]
         # ordering = ('',)
 
     text = models.TextField(verbose_name='متن', max_length=500)

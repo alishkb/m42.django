@@ -1,10 +1,10 @@
 from django.db import models
 from .managers import UserManager
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 # Create your models here.
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'کاربر وبلاگ'
         verbose_name_plural = 'کاربرهای وبلاگ'

@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+# from django.contrib.auth.models import PermissionsMixin
 from .forms import UserCreationForm, UserChangeForm
 from .models import User
 from django.contrib.auth.models import Group
@@ -13,7 +14,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         ('Main', {'fields':('username', 'first_name', 'last_name', 'password')}),
         ('Personal Info', {'fields': ('email', 'phone', 'image', 'start_time', 'login_time')}),
-        ('Permissions', {'fields': ('is_active', 'is_admin')})
+        ('Permissions', {'fields': ('is_active', 'is_admin', 'groups')}),
     )
     add_fieldsets = (
         (None, {
@@ -26,6 +27,7 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('username', 'last_name')
     filter_horizontal = ()
 
-
+# admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+# admin.site.register(Group)
 # admin.site.unregister(Group)
