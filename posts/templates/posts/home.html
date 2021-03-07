@@ -17,13 +17,13 @@
             </ul>
         </div>
     {% endfor %}
-    <div class="px-3">
+    <div class="px-3 row">
         <form action="">
-            <div class="form-group">
+            <div class="form-group col col-4">
                 {{ form.search.errors }}
                 {{ form.search }}
                 {{ form.sub }}
-            </div>
+            </div><br>
             <input type="submit" value="جستجو" class="btn btn-light">
         </form>
     </div>

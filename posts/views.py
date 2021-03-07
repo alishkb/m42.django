@@ -2,14 +2,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.defaulttags import register
 from django.views import generic
 from .models import Post, Comment, Like_Post, Dislike_Post, Like_Comment, Dislike_Comment, Category, Tag
-from .forms import AddPostForm, EditPostForm, AddCommentForm, EditCommentForm, SearchForm
+from .forms import AddPostForm, EditPostForm, AddCommentForm, EditCommentForm, SearchForm, AddTagForm
 from accounts.models import User
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 import datetime
 from .forms import AddCommentForm
 from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models.functions import Greatest
+from django.contrib.auth.models import Permission
 # from django.contrib.postgres.search import SearchVector
 # from django.db.models import Q
 # Create your views here.
@@ -25,8 +26,6 @@ def HomeView(request, cat_id=None, tag_id=None, user_id=None):
             cd = form.cleaned_data['search']
             # if 'sub' in request.GET:
             sub = form.cleaned_data['sub']
-            print(sub)
-            print(cd)
             if sub == 'all':
                 posts = posts.annotate(similarity=Greatest(
                     TrigramSimilarity('title', cd),
@@ -130,9 +129,12 @@ def PostView(request, post_id):
 #         context['comments'] = comments
 #         return context
 
-@login_required    
+@login_required
+@permission_required('posts.add_post')    
 def CreatePost(request, user_id):
     if request.user.id == user_id:
+        print(request.user.user_permissions.all())
+        print(request.user.groups.all())
         if request.method == 'POST':
             form = AddPostForm(request.POST)
             if form.is_valid():
@@ -141,9 +143,19 @@ def CreatePost(request, user_id):
                 new_post.save()
                 messages.success(request, 'پست شما با موفقیت ذخیره شد', 'success')
                 return redirect('posts:home')
-            # pass
+            # tagform = AddTagForm(request.POST)
+            # if tagform.is_valid():
+            #     tag = tagform.cleaned_data['name']
+            #     form = AddPostForm()
+            #     if Tag.objects.filter(name=tag):
+            #         print('voroooood')
+            #         messages.error(request, 'این برچسب قبلا اضافه شده است', 'error')
+            #     else:
+            #         print('not voeeeeeee')
+            #         tagform.save()         
         else:
             form = AddPostForm()
+            # tagform = AddTagForm()
         return render(request, 'posts/create.html', {'form':form})
     else:
         return redirect('posts:home')

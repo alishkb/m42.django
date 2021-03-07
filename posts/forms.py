@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Comment
+from .models import Post, Comment, Tag
 
 
 class AddPostForm(forms.ModelForm):
@@ -13,13 +13,23 @@ class AddPostForm(forms.ModelForm):
             'tag': forms.SelectMultiple(attrs={'class':'form-control'})
         }
 
+class AddTagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = ('name',)
+        widgets = {
+            'name': forms.TextInput(attrs={'class':'form-control'}),
+        }
+
 class EditPostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'text')
+        fields = ('title', 'text', 'category', 'tag')
         widgets = {
             'title': forms.TextInput(attrs={'class':'form-control'}),
-            'text': forms.Textarea(attrs={'class':'form-control'})
+            'text': forms.Textarea(attrs={'class':'form-control'}),
+            'category': forms.Select(attrs={'class':'form-control'}),
+            'tag': forms.SelectMultiple(attrs={'class':'form-control'})
         }
 
 class AddCommentForm(forms.ModelForm):
@@ -42,7 +52,7 @@ class EditCommentForm(forms.ModelForm):
         }
 
 class SearchForm(forms.Form):
-    search = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    search = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'جستجو در شابلاگ'}))
     options = (
         ('all', 'همه موارد'),
         ('title', 'عنوان'),

@@ -8,6 +8,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'کاربر وبلاگ'
         verbose_name_plural = 'کاربرهای وبلاگ'
+        
     username = models.CharField(verbose_name='نام کاربری', max_length=20, unique=True)
     first_name = models.CharField(verbose_name='نام', max_length=100, null=True, blank=True)
     last_name = models.CharField(verbose_name='نام خانوادگی', max_length=100)
@@ -21,6 +22,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(verbose_name='کلمه عبور', max_length=300)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=True)
 
     objects = UserManager()
     USERNAME_FIELD ='username'
@@ -32,15 +34,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         else:
             return self.last_name
 
-    def has_perm(self, perm, obj=None):
-        return True
+    # def has_perm(self, perm, obj=None):
+    #     return True
 
-    def has_module_perms(self, app_label):
-        return True
+    # def has_module_perms(self, app_label):
+    #     return True
 
-    @property
-    def is_staff(self):
-        return self.is_admin
+    # @property
+    # def is_staff(self):
+    #     return self.is_admin
     
     def get_absolute_url(self):
         return reverse('posts:user_filter', args=[self.id,])
