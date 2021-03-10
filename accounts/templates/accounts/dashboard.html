@@ -8,7 +8,8 @@
             <img src="{{ user.image.url }}" alt="" width="75" height="75" class="rounded mx-auto d-block">
         </div>
     {% endif %}
-    <p class="px-3 text-white bg-dark"> {{ user.last_name }} </p>
+    <div class="px-3 text-white bg-dark"> {{ user.last_name }} <br>
+    دسته بندی کاربر: {{ user.groups.all.0 }}</div>
         
     {% for post in posts %}
         <div class="card">

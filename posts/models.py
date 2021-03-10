@@ -56,7 +56,8 @@ class Post(models.Model):
         verbose_name_plural = 'پست ها'
         ordering = ('-pub_date', )
         permissions = [
-            ('accept_post', 'تایید پست'),
+            ('approve_post', 'تایید پست'),
+            ('active_post', 'قابلیت نمایش پست')
         ]
         # permission = [
         #     ("view_post_appact", "مشاهده پست های تایید شده و فعال"),
@@ -129,12 +130,13 @@ class Comment(models.Model):
         verbose_name = 'نظر'
         verbose_name_plural = 'نظرات'
         permissions = [
-            ('accept_comment', 'تایید نظر'),
+            ('approve_comment', 'تایید نظر'),
         ]
         # ordering = ('',)
 
     text = models.TextField(verbose_name='متن', max_length=500)
-    approving = models.BooleanField(verbose_name='تایید پست', default=False)
+    activate = models.BooleanField(verbose_name='قابلیت نمایش', default=True)
+    approving = models.BooleanField(verbose_name='تایید نظر', default=False)
     post = models.ForeignKey(Post, verbose_name='پست',
                              on_delete=models.CASCADE, related_name='comment_post')
     user = models.ForeignKey(User, verbose_name='کاربر',

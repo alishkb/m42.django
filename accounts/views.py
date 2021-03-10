@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from random import randint
 from kavenegar import *
 
+
 def user_login(request):
     next = request.GET.get('next')
     if request.method == 'POST':

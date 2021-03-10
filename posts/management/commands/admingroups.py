@@ -96,7 +96,6 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR("It's impossible to find permissions of tag model"))
         else:
             normal_user.permissions.add(view_tag)
-            normal_user.permissions.add(add_tag)
 
             writer_user.permissions.add(view_tag)
             writer_user.permissions.add(add_tag)
@@ -114,19 +113,77 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('Permissions of tag model added to groups successfully'))
 
         try:
-            accept_post = Permission.objects.get(codename='accept_post')
+            view_likepost = Permission.objects.get(codename='view_likepost')
+            edit_likepost = Permission.objects.get(codename='change_likepost')
+            add_likepost = Permission.objects.get(codename='add_likepost')
+            delete_likepost = Permission.objects.get(codename='delete_likepost')
+        except:
+            self.stdout.write(self.style.ERROR("It's impossible to find permissions of like post model"))
+        else:
+            normal_user.permissions.add(view_likepost)
+            normal_user.permissions.add(add_likepost)
+
+            writer_user.permissions.add(view_likepost)
+            writer_user.permissions.add(add_likepost)
+
+            editor_user.permissions.add(view_likepost)
+            editor_user.permissions.add(add_likepost)
+
+            admin_user.permissions.add(view_likepost)
+            admin_user.permissions.add(edit_likepost)
+            admin_user.permissions.add(add_likepost)
+            admin_user.permissions.add(delete_likepost)
+
+            self.stdout.write(self.style.SUCCESS('Permissions of like post model added to groups successfully'))
+
+        try:
+            view_like_comment = Permission.objects.get(codename='view_like_comment')
+            edit_like_comment = Permission.objects.get(codename='change_like_comment')
+            add_like_comment = Permission.objects.get(codename='add_like_comment')
+            delete_like_comment = Permission.objects.get(codename='delete_like_comment')
+        except:
+            self.stdout.write(self.style.ERROR("It's impossible to find permissions of like comment model"))
+        else:
+            normal_user.permissions.add(view_like_comment)
+            normal_user.permissions.add(add_like_comment)
+
+            writer_user.permissions.add(view_like_comment)
+            writer_user.permissions.add(add_like_comment)
+
+            editor_user.permissions.add(view_like_comment)
+            editor_user.permissions.add(add_like_comment)
+
+            admin_user.permissions.add(view_like_comment)
+            admin_user.permissions.add(edit_like_comment)
+            admin_user.permissions.add(add_like_comment)
+            admin_user.permissions.add(delete_like_comment)
+
+            self.stdout.write(self.style.SUCCESS('Permissions of like comment model added to groups successfully'))
+
+        try:
+            approve_post = Permission.objects.get(codename='approve_post')
         except:
             self.stdout.write(self.style.ERROR("It's impossible to find permissions of accept post"))
         else:
-            editor_user.permissions.add(accept_post)
-            admin_user.permissions.add(accept_post)
-            self.stdout.write(self.style.SUCCESS('Permissions of accept post added to groups successfully'))
+            editor_user.permissions.add(approve_post)
+            admin_user.permissions.add(approve_post)
+            self.stdout.write(self.style.SUCCESS('Permissions of approve post added to groups successfully'))
 
         try:
-            accept_comment = Permission.objects.get(codename='accept_comment')
+            active_post = Permission.objects.get(codename='active_post')
+        except:
+            self.stdout.write(self.style.ERROR("It's impossible to find permissions of active post"))
+        else:
+            writer_user.permissions.add(active_post)
+            editor_user.permissions.add(active_post)
+            admin_user.permissions.add(active_post)
+            self.stdout.write(self.style.SUCCESS('Permissions of active post added to groups successfully'))
+
+        try:
+            approve_comment = Permission.objects.get(codename='approve_comment')
         except:
             self.stdout.write(self.style.ERROR("It's impossible to find permissions of accept comment"))
         else:
-            editor_user.permissions.add(accept_comment)
-            admin_user.permissions.add(accept_comment)
-            self.stdout.write(self.style.SUCCESS('Permissions of accept comment added to groups successfully'))
+            editor_user.permissions.add(approve_comment)
+            admin_user.permissions.add(approve_comment)
+            self.stdout.write(self.style.SUCCESS('Permissions of approve comment added to groups successfully'))
