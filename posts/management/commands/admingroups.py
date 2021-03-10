@@ -113,26 +113,26 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('Permissions of tag model added to groups successfully'))
 
         try:
-            view_likepost = Permission.objects.get(codename='view_likepost')
-            edit_likepost = Permission.objects.get(codename='change_likepost')
-            add_likepost = Permission.objects.get(codename='add_likepost')
-            delete_likepost = Permission.objects.get(codename='delete_likepost')
+            view_like_post = Permission.objects.get(codename='view_likepost')
+            edit_like_post = Permission.objects.get(codename='change_likepost')
+            add_like_post = Permission.objects.get(codename='add_likepost')
+            delete_like_post = Permission.objects.get(codename='delete_likepost')
         except:
             self.stdout.write(self.style.ERROR("It's impossible to find permissions of like post model"))
         else:
-            normal_user.permissions.add(view_likepost)
-            normal_user.permissions.add(add_likepost)
+            normal_user.permissions.add(view_like_post)
+            normal_user.permissions.add(add_like_post)
 
-            writer_user.permissions.add(view_likepost)
-            writer_user.permissions.add(add_likepost)
+            writer_user.permissions.add(view_like_post)
+            writer_user.permissions.add(add_like_post)
 
-            editor_user.permissions.add(view_likepost)
-            editor_user.permissions.add(add_likepost)
+            editor_user.permissions.add(view_like_post)
+            editor_user.permissions.add(add_like_post)
 
-            admin_user.permissions.add(view_likepost)
-            admin_user.permissions.add(edit_likepost)
-            admin_user.permissions.add(add_likepost)
-            admin_user.permissions.add(delete_likepost)
+            admin_user.permissions.add(view_like_post)
+            admin_user.permissions.add(edit_like_post)
+            admin_user.permissions.add(add_like_post)
+            admin_user.permissions.add(delete_like_post)
 
             self.stdout.write(self.style.SUCCESS('Permissions of like post model added to groups successfully'))
 
