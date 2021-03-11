@@ -11,13 +11,14 @@ from .forms import AddCommentForm
 from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models.functions import Greatest
 from django.contrib.auth.models import Permission
+from django.http import HttpResponseForbidden
 # from django.contrib.postgres.search import SearchVector
 # from django.db.models import Q
 # Create your views here.
 
 
 def HomeView(request, cat_id=None, tag_id=None, user_id=None):
-    posts = Post.objects.filter(approving=True)
+    posts = Post.objects.filter(approving=True, activate=True)
     categories = Category.objects.filter(is_fcat=True)
     form = SearchForm()
     if 'search' in request.GET:
@@ -71,8 +72,12 @@ def HomeView(request, cat_id=None, tag_id=None, user_id=None):
 
 
 def PostView(request, post_id):
-    post = get_object_or_404(Post, id=post_id)    
-    comments = Comment.objects.filter(post=post)
+    post = get_object_or_404(Post, id=post_id)
+    if post:
+        if post.approving == False or post.activate == False:
+            return HttpResponseForbidden()
+    # post = post.filter(approving=True, activate=True)    
+    comments = Comment.objects.filter(post=post, approving=True, activate=True)
 
     if request.method == 'POST':
         form = AddCommentForm(request.POST)
@@ -133,8 +138,6 @@ def PostView(request, post_id):
 @permission_required('posts.add_post')    
 def CreatePost(request, user_id):
     if request.user.id == user_id:
-        print(request.user.user_permissions.all())
-        print(request.user.groups.all())
         if request.method == 'POST':
             form = AddPostForm(request.POST)
             if form.is_valid():
