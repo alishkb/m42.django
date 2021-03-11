@@ -74,7 +74,9 @@ def HomeView(request, cat_id=None, tag_id=None, user_id=None):
 def PostView(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if post:
-        if post.approving == False or post.activate == False:
+        if request.user == post.user:
+            pass
+        elif post.approving == False or post.activate == False:
             return HttpResponseForbidden()
     # post = post.filter(approving=True, activate=True)    
     comments = Comment.objects.filter(post=post, approving=True, activate=True)

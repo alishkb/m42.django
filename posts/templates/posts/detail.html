@@ -8,15 +8,17 @@
     <div class="m-4">
         <div class="p-3 bg-secondary text-white">
             <p class="fs-4 text-center bg-light text-dark">{{ post.title }}</p>
-            <p>{{ post.text|linebreaks }}</p>
+            <p>{{ post.text|linebreaks }}</p><hr>
             {% if post.image %}
                 <img src="{{ post.image.url }}" alt="">
             {% endif %}
             <p>نگارنده: {{ post.user }}</p>
             {% if request.user.id == post.user.id %}
+                <div class="">وضعیت پست: {% if post.approving == True %} تایید شده {% else %} تایید نشده {% endif %}</div><br>
                 <a href="{% url 'posts:edit' post.user.id post.id %}" class="btn btn-warning">ویرایش</a>
                 <a href="{% url 'posts:delete' post.user.id post.id %}" class="btn btn-danger">حذف</a>
-            {% endif %} <br>
+                <br>
+            {% endif %}
             {% if request.user.is_authenticated %}
                 <br>
                 <a href="{% url 'posts:post_like' post.id %}" class="btn btn-light {% if like_dislike == 'dislike' %} disabled {% endif %}">Like {{ post.likes_count }}</a>
