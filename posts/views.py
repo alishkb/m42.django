@@ -13,7 +13,7 @@ from django.db.models.functions import Greatest
 from django.contrib.auth.models import Permission
 from django.http import HttpResponseForbidden
 # from django.contrib.postgres.search import SearchVector
-# from django.db.models import Q
+from django.db.models import Q
 # Create your views here.
 
 
@@ -53,6 +53,9 @@ def HomeView(request, cat_id=None, tag_id=None, user_id=None):
     if cat_id:
         category = get_object_or_404(Category, id=cat_id)
         posts = posts.filter(category=category)
+        # if category.fatherCat:
+        #     posts = posts.filter(Q(category=category) | Q(category.fatherCat=category))
+        # set for father category
     elif tag_id:
         tag = get_object_or_404(Tag, id=tag_id)
         posts = posts.filter(tag=tag)
@@ -219,6 +222,7 @@ def EditComment(request, user_id, comment_id):
                 form.save()
                 messages.success(request, 'ویرایش نظر با موفقیت انجام شد', 'success')
                 return redirect('posts:detail', comment.post.id)
+            # should be approved by manager
         else:
             form = EditCommentForm(instance=comment)
         return render(request, 'posts/edit.html', {'form':form})

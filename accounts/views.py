@@ -2,12 +2,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 # from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 from .models import User
 from posts.models import Post
 from .forms import UserLoginForm, UserRegistrationForm, PhoneLoginForm, VerifyPhoneForm, UserDashboardForm
 from django.contrib.auth.decorators import login_required
 from random import randint
 from kavenegar import *
+
 
 
 def user_login(request):
@@ -36,7 +38,9 @@ def user_register(request):
         if form.is_valid():
             cd = form.cleaned_data
             if cd['password'] == cd['re_password']:
+                normal_user = Group.objects.get(name = 'کاربران ساده')
                 user = User.objects.create_user(cd['username'], cd['last_name'], cd['phone'], cd['password'])
+                user.groups.add(normal_user)
                 # user.save()
                 login(request, user)
                 messages.success(request, f'اطلاعات شما با موفقیت ثبت شد {cd["username"]}', 'success')
@@ -71,6 +75,7 @@ def phone_login(request):
         form = PhoneLoginForm(request.POST)
         if form.is_valid():
             global phone, ch
+            # set ch in session
             phone = f"0{form.cleaned_data['phone']}"
             ch = randint(1000, 9999)
             api = KavenegarAPI('37513432732F4B58674A7A4D504D7375474F47526634327934564351502F673337384E7A4A39584D5333383D')
