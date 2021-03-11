@@ -113,10 +113,10 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('Permissions of tag model added to groups successfully'))
 
         try:
-            view_like_post = Permission.objects.get(codename='view_likepost')
-            edit_like_post = Permission.objects.get(codename='change_likepost')
-            add_like_post = Permission.objects.get(codename='add_likepost')
-            delete_like_post = Permission.objects.get(codename='delete_likepost')
+            view_like_post = Permission.objects.get(codename='view_like_post')
+            edit_like_post = Permission.objects.get(codename='change_like_post')
+            add_like_post = Permission.objects.get(codename='add_like_post')
+            delete_like_post = Permission.objects.get(codename='delete_like_post')
         except:
             self.stdout.write(self.style.ERROR("It's impossible to find permissions of like post model"))
         else:
@@ -135,6 +135,30 @@ class Command(BaseCommand):
             admin_user.permissions.add(delete_like_post)
 
             self.stdout.write(self.style.SUCCESS('Permissions of like post model added to groups successfully'))
+
+        try:
+            view_dislike_post = Permission.objects.get(codename='view_dislike_post')
+            edit_dislike_post = Permission.objects.get(codename='change_dislike_post')
+            add_dislike_post = Permission.objects.get(codename='add_dislike_post')
+            delete_dislike_post = Permission.objects.get(codename='delete_dislike_post')
+        except:
+            self.stdout.write(self.style.ERROR("It's impossible to find permissions of dislike post model"))
+        else:
+            normal_user.permissions.add(view_dislike_post)
+            normal_user.permissions.add(add_dislike_post)
+
+            writer_user.permissions.add(view_dislike_post)
+            writer_user.permissions.add(add_dislike_post)
+
+            editor_user.permissions.add(view_dislike_post)
+            editor_user.permissions.add(add_dislike_post)
+
+            admin_user.permissions.add(view_dislike_post)
+            admin_user.permissions.add(edit_dislike_post)
+            admin_user.permissions.add(add_dislike_post)
+            admin_user.permissions.add(delete_dislike_post)
+
+            self.stdout.write(self.style.SUCCESS('Permissions of dislike post model added to groups successfully'))
 
         try:
             view_like_comment = Permission.objects.get(codename='view_like_comment')
@@ -159,6 +183,30 @@ class Command(BaseCommand):
             admin_user.permissions.add(delete_like_comment)
 
             self.stdout.write(self.style.SUCCESS('Permissions of like comment model added to groups successfully'))
+
+        try:
+            view_dislike_comment = Permission.objects.get(codename='view_dislike_comment')
+            edit_dislike_comment = Permission.objects.get(codename='change_dislike_comment')
+            add_dislike_comment = Permission.objects.get(codename='add_dislike_comment')
+            delete_dislike_comment = Permission.objects.get(codename='delete_dislike_comment')
+        except:
+            self.stdout.write(self.style.ERROR("It's impossible to find permissions of dislike comment model"))
+        else:
+            normal_user.permissions.add(view_dislike_comment)
+            normal_user.permissions.add(add_dislike_comment)
+
+            writer_user.permissions.add(view_dislike_comment)
+            writer_user.permissions.add(add_dislike_comment)
+
+            editor_user.permissions.add(view_dislike_comment)
+            editor_user.permissions.add(add_dislike_comment)
+
+            admin_user.permissions.add(view_dislike_comment)
+            admin_user.permissions.add(edit_dislike_comment)
+            admin_user.permissions.add(add_dislike_comment)
+            admin_user.permissions.add(delete_dislike_comment)
+
+            self.stdout.write(self.style.SUCCESS('Permissions of dislike comment model added to groups successfully'))
 
         try:
             approve_post = Permission.objects.get(codename='approve_post')
