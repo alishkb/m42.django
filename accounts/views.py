@@ -74,10 +74,12 @@ def phone_login(request):
     if request.method == 'POST':
         form = PhoneLoginForm(request.POST)
         if form.is_valid():
-            global phone, ch
+            # global phone, ch
             # set ch in session
             phone = f"0{form.cleaned_data['phone']}"
             ch = randint(1000, 9999)
+            request.session['ch'] = ch
+            request.session['phone'] = phone
             api = KavenegarAPI('37513432732F4B58674A7A4D504D7375474F47526634327934564351502F673337384E7A4A39584D5333383D')
             params = { 'sender': '', 'receptor':phone, 'message':ch }
             response = api.sms_send(params)
@@ -90,7 +92,9 @@ def verify(request):
     if request.method == 'POST':
         form = VerifyPhoneForm(request.POST)
         if form.is_valid():
+            ch = request.session['ch']
             if ch == form.cleaned_data['code']:
+                phone = request.session['phone']
                 user = get_object_or_404(User, phone=phone)
                 login(request, user)
                 messages.success(request, 'شما با موفقیت وارد شدید', 'success')
