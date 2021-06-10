@@ -19,7 +19,6 @@ class UserAdmin(BaseUserAdmin):
     )
     add_fieldsets = (
         (None, {
-            # 'fields': ('username', 'password', 're_password', 'first_name', 'last_name', 'email', 'phone')
             'fields': ('username', 'password', 're_password', 'last_name', 'phone')
         }),
     )

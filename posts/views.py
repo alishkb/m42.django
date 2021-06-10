@@ -7,7 +7,6 @@ from accounts.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 import datetime
-from .forms import AddCommentForm
 from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models.functions import Greatest
 from django.contrib.auth.models import Permission
